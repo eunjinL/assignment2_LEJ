@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="assignment2_LEJ.Views.WaferMapView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:assignment2_LEJ.Views"
+        xmlns:viewModels="clr-namespace:assignment2_LEJ.ViewModels"
+        mc:Ignorable="d"
+        Height="450" Width="800"
+        Background="Black">
+    <UserControl.DataContext>
+        <viewModels:WaferMapViewModel />
+    </UserControl.DataContext>
+    <Grid>
+        <!-- Wafer Map 그리기 -->
+        <Canvas x:Name="WaferCanvas" Width="{Binding WaferMap.Width}" Height="{Binding WaferMap.Height}">
+            <!-- 불량 Die 그리기. 불량 Die는 빨간색 사각형으로 표시 -->
+            <ItemsControl ItemsSource="{Binding WaferMap.DefectiveDies}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Rectangle Fill="Red" Width="10" Height="10" Canvas.Left="{Binding X}" Canvas.Top="{Binding Y}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Canvas>
+    </Grid>
+</UserControl>

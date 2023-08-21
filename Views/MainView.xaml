@@ -1,0 +1,40 @@
+﻿<Window x:Class="assignment2_LEJ.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:assignment2_LEJ.ViewModels"
+        xmlns:viewModels="clr-namespace:assignment2_LEJ.ViewModels"
+        xmlns:views="clr-namespace:assignment2_LEJ.Views"
+        mc:Ignorable="d"
+        Title="MainView" Height="1000" Width="1500">
+    <Window.DataContext>
+        <viewModels:MainViewModel />
+    </Window.DataContext>
+    <Grid>
+        <!-- Row Definitions -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Column Definitions -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Wafer Map Viewer -->
+        <views:WaferMapView Grid.Row="0" Grid.Column="0"/>
+
+        <!-- Defect Image Viewer -->
+        <views:DefectImageView Grid.Row="0" Grid.Column="1"/>
+
+        <!-- File List Viewer -->
+        <views:FileListView Grid.Row="1" Grid.Column="0"/>
+
+        <!-- Defect Info Viewer -->
+        <views:DefectInfoView Grid.Row="1" Grid.Column="1"/>
+
+    </Grid>
+</Window>
