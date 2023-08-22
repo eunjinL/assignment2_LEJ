@@ -10,7 +10,7 @@ namespace assignment2_LEJ.Models
     {
         public string FileVersion { get; set; }
         public DateTime ResultTimestamp { get; set; }
-        public Tuple<string, List<string>> TiffSpec { get; set; }  // Tuple<Version, List of Colors>
+        public Tuple<string, List<string>> TiffSpec { get; set; }
         public List<string> InspectionStationID { get; set; } = new List<string>();
         public string SampleType { get; set; }
         public DateTime FileTimestamp { get; set; }
@@ -28,7 +28,19 @@ namespace assignment2_LEJ.Models
         public string Slot { get; set; }
         public Tuple<double, double> SampleCenterLocation { get; set; }
         public int InspectionTest { get; set; }
-
+        public int Count { get; set; }
+        public int XMax { get; set; }
+        public int YMax { get; set; }
+        public int XMin { get; set; }
+        public int YMin { get; set; }
+        public int GridWidth { get; set; }
+        public int GridHeight { get; set; }
+        private int gridResolution = 1;
+        public int GridResolution
+        {
+            get { return gridResolution; }
+            set { gridResolution = value; }
+        }
         public List<Die> Dies { get; set; } = new List<Die>();
     }
 }

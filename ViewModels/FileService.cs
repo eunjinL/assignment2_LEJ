@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Win32;
+using System.Globalization;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace assignment2_LEJ.ViewModels
 {
@@ -16,8 +18,44 @@ namespace assignment2_LEJ.ViewModels
     {
         public ICommand OpenCommand { get; private set; }
         public ObservableCollection<string> FileList { get; private set; }
-        public string SelectedFile { get; set; }
+        private string selectedFile;
+        private static FileService instance;
+        private Wafer currentLoadedWafer;
+        public Wafer CurrentLoadedWafer
+        {
+            get { return currentLoadedWafer; }
+            set
+            {
+                if (currentLoadedWafer != value)
+                {
+                    currentLoadedWafer = value;
+                    OnPropertyChanged("CurrentLoadedWafer");
+                }
+            }
+        }
 
+        public static FileService Instance
+        {
+            get
+            {
+                if (instance == null)
+                    instance = new FileService();
+                return instance;
+            }
+        }
+        public string SelectedFile
+        {
+            get { return selectedFile; }
+            set
+            {
+                if (selectedFile != value)
+                {
+                    selectedFile = value;
+                    OnPropertyChanged("SelectedFile");
+                    LoadSelectedFile(value);
+                }
+            }
+        }
         public FileService()
         {
             OpenCommand = new RelayCommand(OpenFolder);
@@ -27,15 +65,21 @@ namespace assignment2_LEJ.ViewModels
         private void OpenFolder(object parameter)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.CheckFileExists = false; // 파일이 실제로 존재하는지 검사하지 않습니다.
-            openFileDialog.FileName = "[폴더 선택]"; // 기본 파일 이름을 제공합니다.
-            openFileDialog.ValidateNames = false; // 유효한 파일 이름만을 허용하지 않습니다.
+            openFileDialog.CheckFileExists = false;
+            openFileDialog.FileName = "[폴더 선택]";
+            openFileDialog.ValidateNames = false;
 
             if (openFileDialog.ShowDialog() == true)
             {
-                // 폴더 경로 가져오기
                 string folderPath = System.IO.Path.GetDirectoryName(openFileDialog.FileName);
                 LoadFiles(folderPath);
+            }
+        }
+        private void LoadSelectedFile(string filePath)
+        {
+            if (!string.IsNullOrWhiteSpace(filePath))
+            {
+                LoadFromFile(filePath);
             }
         }
 
@@ -112,8 +156,9 @@ namespace assignment2_LEJ.ViewModels
                     {
                         line = line.TrimEnd(';');
                         string[] parts = line.Split(' ');
-                        wafer.SetupID = parts[1].Trim('"');
-                        wafer.SetupDate = DateTime.Parse(parts[2] + " " + parts[3].TrimEnd(';'));
+                        wafer.SetupID = parts[1].Trim('"'); 
+                        string dateFormat = "MM-dd-yy HH:mm:ss";
+                        wafer.SetupDate = DateTime.ParseExact(parts[2] + " " + parts[3].TrimEnd(';'), dateFormat, CultureInfo.InvariantCulture);
                     }
                     else if (line.StartsWith("StepID"))
                     {
@@ -171,25 +216,42 @@ namespace assignment2_LEJ.ViewModels
 
                     else if (line.StartsWith("SampleTestPlan"))
                     {
-                        int count = int.Parse(sr.ReadLine().Trim());
-                        for (int i = 0; i < count; i++)
+                        string[] parts = line.Split(' ');
+                        if (parts.Length > 1 && int.TryParse(parts[1], out int count))
                         {
-                            string coordLine = sr.ReadLine();
-
-                            if (i == count - 1)
+                            wafer.Count = count;
+                            wafer.XMin = int.MaxValue;
+                            wafer.YMin = int.MaxValue;
+                            wafer.XMax = int.MinValue;
+                            wafer.YMax = int.MinValue;
+                            for (int i = 0; i < count; i++)
                             {
-                                coordLine = coordLine.TrimEnd(';');
+                                string coordLine = sr.ReadLine();
+
+                                if (i == count - 1)
+                                {
+                                    coordLine = coordLine.TrimEnd(';');
+                                }
+
+                                string[] coords = coordLine.Split(' ');
+                                int xCoord = int.Parse(coords[0]);
+                                int yCoord = int.Parse(coords[1]);
+
+                                if (xCoord > wafer.XMax) wafer.XMax = xCoord;
+                                if (xCoord < wafer.XMin) wafer.XMin = xCoord;
+                                if (yCoord > wafer.YMax) wafer.YMax = yCoord;
+                                if (yCoord < wafer.YMin) wafer.YMin = yCoord;
+
+                                Die die = new Die
+                                {
+                                    Coordinate = new Tuple<int, int>(xCoord, yCoord)
+                                };
+                                wafer.Dies.Add(die);
                             }
-
-                            string[] coords = coordLine.Split(' ');
-                            int xCoord = int.Parse(coords[0]);
-                            int yCoord = int.Parse(coords[1]);
-
-                            Die die = new Die
-                            {
-                                Coordinate = new Tuple<int, int>(xCoord, yCoord)
-                            };
-                            wafer.Dies.Add(die);
+                        }
+                        else
+                        {
+                            Console.WriteLine("숫자 예외 처리");
                         }
                     }
 
@@ -224,24 +286,28 @@ namespace assignment2_LEJ.ViewModels
                             line = sr.ReadLine();
                             if (line != null)
                             {
+                                if (line.EndsWith(";"))
+                                {
+                                    line = line.TrimEnd(';');
+                                }
                                 string[] imageParts = line.Split(' ');
-                                defect.IMAGELIST.Add(int.Parse(imageParts[1])); 
+                                defect.IMAGELIST.Add(int.Parse(imageParts[1]));
                             }
 
-                            Die dieWithDefect = new Die
-                            {
-                                Coordinate = new Tuple<int, int>(defect.XINDEX, defect.YINDEX),
-                                DefectInfo = defect
-                            };
+                            Die matchingDie = wafer.Dies.FirstOrDefault(d => d.Coordinate.Item1 == defect.XINDEX && d.Coordinate.Item2 == defect.YINDEX);
 
-                            wafer.Dies.Add(dieWithDefect);
+                            if (matchingDie != null)
+                            {
+                                matchingDie.DefectInfo = defect;
+                            }
                             line = sr.ReadLine(); 
                         }
                     }
 
                 }
             }
-
+            CurrentLoadedWafer = wafer;
+            Messenger.Default.Send<Wafer>(wafer);
             return wafer;
         }
 
@@ -251,5 +317,4 @@ namespace assignment2_LEJ.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
-
 }

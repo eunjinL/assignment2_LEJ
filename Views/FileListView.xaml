@@ -6,7 +6,6 @@
         xmlns:local="clr-namespace:assignment2_LEJ.Views"
         xmlns:viewModels="clr-namespace:assignment2_LEJ.ViewModels"
         mc:Ignorable="d"
-        Height="450" Width="800"
         Background="White">
     <UserControl.DataContext>
         <viewModels:FileService />

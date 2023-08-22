@@ -5,23 +5,38 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:assignment2_LEJ.Views"
         xmlns:viewModels="clr-namespace:assignment2_LEJ.ViewModels"
+        xmlns:converters="clr-namespace:assignment2_LEJ.Converters"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Height="450" Width="800"
         Background="Black">
     <UserControl.DataContext>
         <viewModels:WaferMapViewModel />
     </UserControl.DataContext>
+    <UserControl.Resources>
+        <converters:GridToCanvasConverter x:Key="GridToCanvasConverter" />
+    </UserControl.Resources>
     <Grid>
-        <!-- Wafer Map 그리기 -->
-        <Canvas x:Name="WaferCanvas" Width="{Binding WaferMap.Width}" Height="{Binding WaferMap.Height}">
-            <!-- 불량 Die 그리기. 불량 Die는 빨간색 사각형으로 표시 -->
-            <ItemsControl ItemsSource="{Binding WaferMap.DefectiveDies}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Rectangle Fill="Red" Width="10" Height="10" Canvas.Left="{Binding X}" Canvas.Top="{Binding Y}" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </Canvas>
+        <ItemsControl ItemsSource="{Binding DieViewModels}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Rectangle Width="10" 
+                               Height="10" 
+                               Fill="LightGray" 
+                               Stroke="Black" 
+                               Margin="1">
+                        <Rectangle.RenderTransform>
+                            <TranslateTransform 
+                                X="{Binding Die.GridCoordinate.Item1, Converter={StaticResource GridToCanvasConverter}}" 
+                                Y="{Binding Die.GridCoordinate.Item2, Converter={StaticResource GridToCanvasConverter}}" />
+                        </Rectangle.RenderTransform>
+                    </Rectangle>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas Background="Black" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
     </Grid>
 </UserControl>

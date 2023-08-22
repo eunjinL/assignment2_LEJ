@@ -8,7 +8,8 @@ namespace assignment2_LEJ.Models
 {
     public class Die
     {
-        public Tuple<int, int> Coordinate { get; set; } // SampleTestPlan coordinates
-        public Defect DefectInfo { get; set; }  // Null if no defect
+        public Tuple<int, int> Coordinate { get; set; }
+        public Defect DefectInfo { get; set; }
+        public Tuple<int, int> GridCoordinate { get; set; }
     }
 }
