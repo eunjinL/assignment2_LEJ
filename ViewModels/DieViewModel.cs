@@ -21,7 +21,17 @@ namespace assignment2_LEJ.ViewModels
             }
         }
 
-        public Tuple<int, int> GridCoordinate => Die?.GridCoordinate;
+        public Tuple<int, int> GridCoordinate
+        {
+            get
+            {
+                if (Die != null)
+                {
+                    return Die.GridCoordinate;
+                }
+                return null;
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName)

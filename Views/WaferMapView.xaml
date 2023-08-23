@@ -7,28 +7,32 @@
         xmlns:viewModels="clr-namespace:assignment2_LEJ.ViewModels"
         xmlns:converters="clr-namespace:assignment2_LEJ.Converters"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         Background="Black">
     <UserControl.DataContext>
         <viewModels:WaferMapViewModel />
     </UserControl.DataContext>
-    <UserControl.Resources>
-        <converters:GridToCanvasConverter x:Key="GridToCanvasConverter" />
-    </UserControl.Resources>
     <Grid>
+        <Grid.Resources>
+            <converters:GridToCanvasConverter x:Key="GridToCanvasConverter" />
+        </Grid.Resources>
+        <i:Interaction.Behaviors>
+            <converters:BindableSizeBehavior Width="{Binding ScreenWidth, Mode=TwoWay}" Height="{Binding ScreenHeight, Mode=TwoWay}"/>
+        </i:Interaction.Behaviors>
         <ItemsControl ItemsSource="{Binding DieViewModels}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Rectangle 
-                       Width="40" 
-                       Height="7" 
-                       Fill="LightGray" 
-                       Stroke="Black" 
-                       Margin="1">
+                   Width="{Binding Path=DataContext.CellWidth, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
+                   Height="{Binding Path=DataContext.CellHeight, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
+                   Fill="LightGray"  
+                   Stroke="Black" 
+                   Margin="1">
                         <Rectangle.RenderTransform>
                             <TranslateTransform 
-                                X="{Binding Die.GridCoordinate.Item1, Converter={StaticResource GridToCanvasConverter}}" 
-                                Y="{Binding Die.GridCoordinate.Item2, Converter={StaticResource GridToCanvasConverter}}" />
+                            X="{Binding Die.GridCoordinate.Item1, Converter={StaticResource GridToCanvasConverter}, ConverterParameter=Width}" 
+                            Y="{Binding Die.GridCoordinate.Item2, Converter={StaticResource GridToCanvasConverter}, ConverterParameter=Height}" />
                         </Rectangle.RenderTransform>
                     </Rectangle>
                 </DataTemplate>
@@ -40,4 +44,5 @@
             </ItemsControl.ItemsPanel>
         </ItemsControl>
     </Grid>
+
 </UserControl>

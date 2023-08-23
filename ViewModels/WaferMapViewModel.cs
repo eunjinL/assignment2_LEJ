@@ -14,26 +14,49 @@ namespace assignment2_LEJ.ViewModels
     public class WaferMapViewModel : INotifyPropertyChanged
     {
         private Wafer wafer;
-        private double dieWidth;
-        private double dieHeight;
+        private double cellWidth;
+        private double cellHeight;
+        private double screenWidth = 800;
+        private double screenHeight = 500;
         private ObservableCollection<Tuple<int, int>> dieCoordinates;
         public ObservableCollection<DieViewModel> DieViewModels { get; set; } = new ObservableCollection<DieViewModel>();
-        public double DieWidth
+        public double CellWidth
         {
-            get { return dieWidth; }
+            get { return cellWidth; }
             set
             {
-                dieWidth = value;
-                OnPropertyChanged("DieWidth");
+                cellWidth = value;
+                OnPropertyChanged(nameof(CellWidth));
             }
         }
-        public double DieHeight
+        public double CellHeight
         {
-            get { return dieHeight; }
+            get { return cellHeight; }
             set
             {
-                dieHeight = value;
-                OnPropertyChanged("DieHeight");
+                cellHeight = value;
+                OnPropertyChanged(nameof(CellHeight));
+            }
+        }
+
+        public double ScreenWidth
+        {
+            get { return screenWidth; }
+            set
+            {
+                screenWidth = value;
+                OnPropertyChanged(nameof(ScreenWidth));
+                UpdateDieSize();
+            }
+        }
+        public double ScreenHeight
+        {
+            get { return screenHeight; }
+            set
+            {
+                screenHeight = value;
+                OnPropertyChanged(nameof(ScreenHeight));
+                UpdateDieSize();
             }
         }
         public Wafer Wafer
@@ -65,6 +88,7 @@ namespace assignment2_LEJ.ViewModels
         private void LoadWaferData(Wafer loadedWafer)
         {
             Wafer = loadedWafer;
+            UpdateDieSize();
         }
 
         private void UpdateDieCoordinates()
@@ -91,31 +115,15 @@ namespace assignment2_LEJ.ViewModels
                     DieViewModels.Add(new DieViewModel { Die = die });
                 }
             }
-            /*else
-            {
-                dieCoordinates.Clear();
-                DieViewModels.Clear();
-
-                Wafer.GridWidth = Wafer.XMax - Wafer.XMin;
-                Wafer.GridHeight = Wafer.YMax - Wafer.YMin;
-
-                double canvasWidth = 800.0 - DieWidth - (2 * 10);
-                double canvasHeight = 500.0 - DieHeight - (2 * 10);
-
-                double scaleX = canvasWidth / Wafer.GridWidth;
-                double scaleY = canvasHeight / Wafer.GridHeight;
-
-                foreach (var die in Wafer.Dies)
-                {
-                    int gridX = (int)((die.Coordinate.Item1 - Wafer.XMin) * scaleX);
-                    int gridY = (int)((die.Coordinate.Item2 - Wafer.YMin) * scaleY);
-                    die.GridCoordinate = new Tuple<int, int>(gridX, gridY);
-
-                    dieCoordinates.Add(die.GridCoordinate);
-                    DieViewModels.Add(new DieViewModel { Die = die });
-                }
-            }*/
         }
+        private void UpdateDieSize()
+        {
+            if (Wafer == null) return;
+
+            CellWidth = ScreenWidth / Wafer.GridWidth;
+            CellHeight = ScreenHeight / Wafer.GridHeight;
+        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
