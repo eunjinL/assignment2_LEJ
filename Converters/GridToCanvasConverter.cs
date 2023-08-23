@@ -10,7 +10,8 @@ namespace assignment2_LEJ.Converters
 {
     public class GridToCanvasConverter : IValueConverter
     {
-        const int CellSize = 10;
+        const int CellWidth = 40; 
+        const int CellHeight = 10;
         const int Margin = 1;
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -18,9 +19,16 @@ namespace assignment2_LEJ.Converters
             if (!(value is int gridCoordinate))
                 return 0;
 
-            int canvasCoordinate = (CellSize + Margin) * gridCoordinate;
-            return canvasCoordinate;
+            if (parameter != null && parameter.ToString() == "Width")
+            {
+                return (CellWidth + Margin) * gridCoordinate;
+            }
+            else
+            {
+                return (CellHeight + Margin) * gridCoordinate;
+            }
         }
+
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {

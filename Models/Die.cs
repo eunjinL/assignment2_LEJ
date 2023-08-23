@@ -9,7 +9,7 @@ namespace assignment2_LEJ.Models
     public class Die
     {
         public Tuple<int, int> Coordinate { get; set; }
-        public Defect DefectInfo { get; set; }
+        public List<Defect> Defects { get; set; } = new List<Defect>();
         public Tuple<int, int> GridCoordinate { get; set; }
     }
 }

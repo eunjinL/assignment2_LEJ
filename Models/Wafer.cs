@@ -8,6 +8,7 @@ namespace assignment2_LEJ.Models
 {
     public class Wafer
     {
+        private int gridResolution = 1;
         public string FileVersion { get; set; }
         public DateTime ResultTimestamp { get; set; }
         public Tuple<string, List<string>> TiffSpec { get; set; }
@@ -35,7 +36,6 @@ namespace assignment2_LEJ.Models
         public int YMin { get; set; }
         public int GridWidth { get; set; }
         public int GridHeight { get; set; }
-        private int gridResolution = 1;
         public int GridResolution
         {
             get { return gridResolution; }

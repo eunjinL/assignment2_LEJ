@@ -297,8 +297,8 @@ namespace assignment2_LEJ.ViewModels
                             Die matchingDie = wafer.Dies.FirstOrDefault(d => d.Coordinate.Item1 == defect.XINDEX && d.Coordinate.Item2 == defect.YINDEX);
 
                             if (matchingDie != null)
-                            {
-                                matchingDie.DefectInfo = defect;
+                            { 
+                                matchingDie.Defects.Add(defect);
                             }
                             line = sr.ReadLine(); 
                         }

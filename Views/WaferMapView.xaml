@@ -19,11 +19,12 @@
         <ItemsControl ItemsSource="{Binding DieViewModels}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Rectangle Width="10" 
-                               Height="10" 
-                               Fill="LightGray" 
-                               Stroke="Black" 
-                               Margin="1">
+                    <Rectangle 
+                       Width="40" 
+                       Height="7" 
+                       Fill="LightGray" 
+                       Stroke="Black" 
+                       Margin="1">
                         <Rectangle.RenderTransform>
                             <TranslateTransform 
                                 X="{Binding Die.GridCoordinate.Item1, Converter={StaticResource GridToCanvasConverter}}" 
