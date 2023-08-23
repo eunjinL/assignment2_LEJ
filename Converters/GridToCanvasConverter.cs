@@ -12,9 +12,31 @@ namespace assignment2_LEJ.Converters
 {
     public class GridToCanvasConverter : DependencyObject, IValueConverter
     {
-        const int CellWidth = 40;
-        const int CellHeight = 10;
         const int Margin = 1;
+
+        public double CellWidth
+        {
+            get
+            {
+                return (double)GetValue(CellWidthProperty);
+            }
+            set
+            {
+                SetValue(CellWidthProperty, value);
+            }
+        }
+
+        public static readonly DependencyProperty CellWidthProperty =
+            DependencyProperty.Register("CellWidth", typeof(double), typeof(GridToCanvasConverter));
+
+        public double CellHeight
+        {
+            get { return (double)GetValue(CellHeightProperty); }
+            set { SetValue(CellHeightProperty, value); }
+        }
+
+        public static readonly DependencyProperty CellHeightProperty =
+            DependencyProperty.Register("CellHeight", typeof(double), typeof(GridToCanvasConverter));
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -31,12 +53,10 @@ namespace assignment2_LEJ.Converters
             }
         }
 
-
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
-
     }
 
 

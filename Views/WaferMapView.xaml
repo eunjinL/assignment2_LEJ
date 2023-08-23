@@ -15,7 +15,9 @@
     </UserControl.DataContext>
     <Grid>
         <Grid.Resources>
-            <converters:GridToCanvasConverter x:Key="GridToCanvasConverter" />
+            <converters:GridToCanvasConverter x:Key="GridToCanvasConverter" 
+                                              CellWidth="{Binding CellWidth, FallbackValue=38.5}" 
+                                              CellHeight="{Binding CellHeight, FallbackValue=8.6}"/>
         </Grid.Resources>
         <i:Interaction.Behaviors>
             <converters:BindableSizeBehavior Width="{Binding ScreenWidth, Mode=TwoWay}" Height="{Binding ScreenHeight, Mode=TwoWay}"/>

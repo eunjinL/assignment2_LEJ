@@ -16,8 +16,8 @@ namespace assignment2_LEJ.ViewModels
         private Wafer wafer;
         private double cellWidth;
         private double cellHeight;
-        private double screenWidth = 800;
-        private double screenHeight = 500;
+        private double screenWidth;
+        private double screenHeight;
         private ObservableCollection<Tuple<int, int>> dieCoordinates;
         public ObservableCollection<DieViewModel> DieViewModels { get; set; } = new ObservableCollection<DieViewModel>();
         public double CellWidth
@@ -120,8 +120,8 @@ namespace assignment2_LEJ.ViewModels
         {
             if (Wafer == null) return;
 
-            CellWidth = ScreenWidth / Wafer.GridWidth;
-            CellHeight = ScreenHeight / Wafer.GridHeight;
+            CellWidth = (ScreenWidth-20) / (Wafer.GridWidth + 1);
+            CellHeight = (ScreenHeight-20) / (Wafer.GridHeight + 1);
         }
 
 
