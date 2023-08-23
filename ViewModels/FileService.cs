@@ -11,6 +11,7 @@ using System.Windows.Input;
 using Microsoft.Win32;
 using System.Globalization;
 using GalaSoft.MvvmLight.Messaging;
+using System.Windows.Forms;
 
 namespace assignment2_LEJ.ViewModels
 {
@@ -64,14 +65,11 @@ namespace assignment2_LEJ.ViewModels
 
         private void OpenFolder(object parameter)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.CheckFileExists = false;
-            openFileDialog.FileName = "[폴더 선택]";
-            openFileDialog.ValidateNames = false;
+            FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
 
-            if (openFileDialog.ShowDialog() == true)
+            if (folderBrowser.ShowDialog() == DialogResult.OK)
             {
-                string folderPath = System.IO.Path.GetDirectoryName(openFileDialog.FileName);
+                string folderPath = folderBrowser.SelectedPath;
                 LoadFiles(folderPath);
             }
         }
@@ -265,8 +263,8 @@ namespace assignment2_LEJ.ViewModels
                             Defect defect = new Defect
                             {
                                 DefectID = int.Parse(parts[0]),
-                                XREL = double.Parse(parts[1]),
-                                YREL = double.Parse(parts[2]),
+                                XREL = double.Parse(parts[1], CultureInfo.InvariantCulture),
+                                YREL = double.Parse(parts[2], CultureInfo.InvariantCulture),
                                 XINDEX = int.Parse(parts[3]),
                                 YINDEX = int.Parse(parts[4]),
                                 XSIZE = double.Parse(parts[5]),

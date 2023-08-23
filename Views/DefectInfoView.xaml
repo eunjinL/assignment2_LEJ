@@ -6,11 +6,133 @@
         xmlns:local="clr-namespace:assignment2_LEJ.Views"
         xmlns:viewModels="clr-namespace:assignment2_LEJ.ViewModels"
         mc:Ignorable="d"
-        Background="White">
+        Background="White" Width="800" Height="450">
     <UserControl.DataContext>
         <viewModels:DefectInfoViewModel />
     </UserControl.DataContext>
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="3*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="1.4*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Margin="10" 
+                    Grid.Row="0" 
+                    Grid.Column="0"
+                    Grid.RowSpan="3">
+            <TextBlock Text="Sample Information" FontWeight="Bold" Margin="0,0,0,10"/>
+            <TextBlock TextWrapping="Wrap">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}FileTimestamp: {0}">
+                        <Binding Path="Wafer.FileTimestamp" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock TextWrapping="Wrap">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}WaferID: {0}">
+                        <Binding Path="Wafer.WaferID" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock TextWrapping="Wrap">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}LotID: {0}">
+                        <Binding Path="Wafer.LotID" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </StackPanel>
+        <!-- 전체 defect 순서 넘기기 -->
+        <DockPanel 
+            Grid.Row="2" 
+            Grid.Column="1" 
+            HorizontalAlignment="Center" 
+            VerticalAlignment="Stretch"
+            Width="400">
+            <Button 
+                Content="←" 
+                Command="{Binding PreviousDefectCommand}" 
+                DockPanel.Dock="Left"
+                Margin="30,20,10,20"/>
+            <Button 
+                Content="→" 
+                Command="{Binding NextDefectCommand}" 
+                DockPanel.Dock="Right"
+                Margin="30,20,10,20"/>
+            <TextBlock 
+                Text="{Binding DefectDisplayText}" 
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center" />
+        </DockPanel>
+
+        <!-- defect list view -->
+        <ListView ItemsSource="{Binding Defects}" 
+                  SelectedItem="{Binding SelectedDefect}"
+                  Grid.Column="0"
+                  Grid.Row="3"
+                  Grid.ColumnSpan="2">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="DEFECTID" 
+                                    DisplayMemberBinding="{Binding DefectID}"
+                                    Width="100" />
+                    <GridViewColumn Header="XREL" 
+                                    DisplayMemberBinding="{Binding XREL, StringFormat={}{0:E6}}" 
+                                    Width="100" />
+                    <GridViewColumn Header="YREL" 
+                                    DisplayMemberBinding="{Binding YREL, StringFormat={}{0:E6}}"
+                                    Width="100" />
+                    <GridViewColumn Header="XINDEX" 
+                                    DisplayMemberBinding="{Binding XINDEX}" 
+                                    Width="100" />
+                    <GridViewColumn Header="YINDEX" 
+                                    DisplayMemberBinding="{Binding YINDEX}" 
+                                    Width="100" />
+                    <GridViewColumn Header="XSIZE" 
+                                    DisplayMemberBinding="{Binding XSIZE}" 
+                                    Width="100" />
+                    <GridViewColumn Header="YSIZE" 
+                                    DisplayMemberBinding="{Binding YSIZE}" 
+                                    Width="100" />
+                    <GridViewColumn Header="DEFECTAREA" 
+                                    DisplayMemberBinding="{Binding DEFECTAREA}" 
+                                    Width="100" />
+                    <GridViewColumn Header="DSIZE" 
+                                    DisplayMemberBinding="{Binding DSIZE}"
+                                    Width="100" />
+                    <GridViewColumn Header="CLASSNUMBER" 
+                                    DisplayMemberBinding="{Binding CLASSNUMBER}"
+                                    Width="100" />
+                    <GridViewColumn Header="TEST" 
+                                    DisplayMemberBinding="{Binding TEST}"
+                                    Width="100" />
+                    <GridViewColumn Header="CLUSTERNUMBER" 
+                                    DisplayMemberBinding="{Binding CLUSTERNUMBER}" 
+                                    Width="100" />
+                    <GridViewColumn Header="ROUGHBINNUMBER" 
+                                    DisplayMemberBinding="{Binding ROUGHBINNUMBER}" 
+                                    Width="100" />
+                    <GridViewColumn Header="FINEBINNUMBER" 
+                                    DisplayMemberBinding="{Binding FINEBINNUMBER}"
+                                    Width="100" />
+                    <GridViewColumn Header="REVIEWSAMPLE" 
+                                    DisplayMemberBinding="{Binding REVIEWSAMPLE}"
+                                    Width="100" />
+                    <GridViewColumn Header="IMAGECOUNT" 
+                                    DisplayMemberBinding="{Binding IMAGECOUNT}"
+                                    Width="100" />
+                    <GridViewColumn Header="IMAGELIST" 
+                                    DisplayMemberBinding="{Binding IMAGELIST}"
+                                    Width="100" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+
     </Grid>
 </UserControl>
