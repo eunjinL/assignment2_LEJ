@@ -95,7 +95,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\BindableSizeBehavior.cs" />
-    <Compile Include="Converters\GridToCanvasConverter.cs" />
     <Compile Include="Models\Defect.cs" />
     <Compile Include="Models\Die.cs" />
     <Compile Include="Models\FileItem.cs" />
