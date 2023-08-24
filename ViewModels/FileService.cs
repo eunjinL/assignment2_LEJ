@@ -21,6 +21,7 @@ namespace assignment2_LEJ.ViewModels
         public ObservableCollection<string> FileList { get; private set; }
         private string selectedFile;
         private static FileService instance;
+        private string folderPath;
         private Wafer currentLoadedWafer;
         public Wafer CurrentLoadedWafer
         {
@@ -69,8 +70,9 @@ namespace assignment2_LEJ.ViewModels
 
             if (folderBrowser.ShowDialog() == DialogResult.OK)
             {
-                string folderPath = folderBrowser.SelectedPath;
+                folderPath = folderBrowser.SelectedPath;
                 LoadFiles(folderPath);
+                Messenger.Default.Send<string>(folderPath);
             }
         }
         private void LoadSelectedFile(string filePath)

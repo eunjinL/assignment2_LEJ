@@ -82,7 +82,7 @@ namespace assignment2_LEJ.ViewModels
         public WaferMapViewModel()
         {
             dieCoordinates = new ObservableCollection<Tuple<int, int>>();
-            Messenger.Default.Register<Wafer>(this, (wafer) => LoadWaferData(wafer));
+            Messenger.Default.Register<Wafer>(this, LoadWaferData);
         }
 
         private void LoadWaferData(Wafer loadedWafer)

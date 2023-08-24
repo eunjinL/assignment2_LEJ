@@ -17,6 +17,7 @@ namespace assignment2_LEJ.ViewModels
         private Defect selectedDefect;
         private Wafer wafer;
         private int currentDefectIndex;
+        // private string defectDisplayText;
 
         public ICommand PreviousDefectCommand { get; }
         public ICommand NextDefectCommand { get; }
@@ -48,6 +49,8 @@ namespace assignment2_LEJ.ViewModels
                 wafer = value;
                 OnPropertyChanged(nameof(Wafer));
                 LoadDefectsFromWafer();
+                OnPropertyChanged(nameof(DefectDisplayText));  
+                OnPropertyChanged(nameof(TotalDefects));
             }
         }
 
@@ -73,15 +76,26 @@ namespace assignment2_LEJ.ViewModels
             get => selectedDefect;
             set
             {
-                selectedDefect = value;
-                OnPropertyChanged(nameof(SelectedDefect));
+                if (selectedDefect != value)
+                {
+                    selectedDefect = value;
+                    OnPropertyChanged(nameof(SelectedDefect));
+                    UpdateCurrentDefectIndex();
+                }
             }
         }
-
+        private void UpdateCurrentDefectIndex()
+        {
+            if (Defects != null && selectedDefect != null)
+            {
+                CurrentDefectIndex = Defects.IndexOf(selectedDefect);
+                Messenger.Default.Send<int>(currentDefectIndex);
+            }
+        }
         public DefectInfoViewModel()
         {
-            Messenger.Default.Register<Wafer>(this, (wafer) => LoadWaferData(wafer));
-
+            Messenger.Default.Register<Wafer>(this, LoadWaferData);
+            defects = new ObservableCollection<Defect>();
             PreviousDefectCommand = new RelayCommand(PreviousDefect);
             NextDefectCommand = new RelayCommand(NextDefect);
         }
@@ -113,6 +127,7 @@ namespace assignment2_LEJ.ViewModels
             {
                 CurrentDefectIndex--;
                 SelectedDefect = Defects[CurrentDefectIndex];
+                Messenger.Default.Send<int>(currentDefectIndex);
             }
         }
 
@@ -122,6 +137,7 @@ namespace assignment2_LEJ.ViewModels
             {
                 CurrentDefectIndex++;
                 SelectedDefect = Defects[CurrentDefectIndex];
+                Messenger.Default.Send<int>(currentDefectIndex);
             }
         }
 

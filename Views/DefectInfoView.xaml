@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:assignment2_LEJ.Views"
         xmlns:viewModels="clr-namespace:assignment2_LEJ.ViewModels"
         mc:Ignorable="d"
-        Background="White" Width="800" Height="450">
+        Background="White" >
     <UserControl.DataContext>
         <viewModels:DefectInfoViewModel />
     </UserControl.DataContext>

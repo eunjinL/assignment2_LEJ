@@ -11,6 +11,6 @@
         <viewModels:DefectImageViewModel />
     </UserControl.DataContext>
     <Grid>
-        <Image Source="{Binding ImagePath}" />
+        <Image Source="{Binding LoadedImage}" Stretch="Uniform" />
     </Grid>
 </UserControl>
