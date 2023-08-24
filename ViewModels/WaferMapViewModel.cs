@@ -47,6 +47,7 @@ namespace assignment2_LEJ.ViewModels
                 screenWidth = value;
                 OnPropertyChanged(nameof(ScreenWidth));
                 UpdateDieSize();
+                UpdateDieCoordinates();
             }
         }
         public double ScreenHeight
@@ -57,6 +58,7 @@ namespace assignment2_LEJ.ViewModels
                 screenHeight = value;
                 OnPropertyChanged(nameof(ScreenHeight));
                 UpdateDieSize();
+                UpdateDieCoordinates();
             }
         }
         public Wafer Wafer
@@ -109,7 +111,8 @@ namespace assignment2_LEJ.ViewModels
                 {
                     int gridX = die.Coordinate.Item1 - Wafer.XMin;
                     int gridY = Math.Abs(die.Coordinate.Item2 - Wafer.YMax);
-                    die.GridCoordinate = new Tuple<int, int>(gridX, gridY);
+
+                    die.GridCoordinate = new Tuple<int, int>((int)((CellWidth + 1) * gridX), (int)((CellHeight + 1) * gridY));
 
                     dieCoordinates.Add(die.GridCoordinate);
                     DieViewModels.Add(new DieViewModel { Die = die });
@@ -120,8 +123,8 @@ namespace assignment2_LEJ.ViewModels
         {
             if (Wafer == null) return;
 
-            CellWidth = (ScreenWidth-25) / (Wafer.GridWidth + 1);
-            CellHeight = (ScreenHeight-25) / (Wafer.GridHeight + 1);
+            CellWidth = (ScreenWidth - 25) / (Wafer.GridWidth + 1);
+            CellHeight = (ScreenHeight - 25) / (Wafer.GridHeight + 1);
         }
 
 

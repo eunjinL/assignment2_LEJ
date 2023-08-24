@@ -46,8 +46,8 @@
 
                         <Rectangle.RenderTransform>
                             <TranslateTransform 
-                X="{Binding Die.GridCoordinate.Item1, Converter={StaticResource GridToCanvasConverter}, ConverterParameter=Width}" 
-                Y="{Binding Die.GridCoordinate.Item2, Converter={StaticResource GridToCanvasConverter}, ConverterParameter=Height}" />
+                X="{Binding Die.GridCoordinate.Item1}" 
+                Y="{Binding Die.GridCoordinate.Item2}" />
                         </Rectangle.RenderTransform>
                     </Rectangle>
                 </DataTemplate>
