@@ -16,8 +16,8 @@
     <Grid>
         <Grid.Resources>
             <converters:GridToCanvasConverter x:Key="GridToCanvasConverter" 
-                                              CellWidth="{Binding CellWidth, FallbackValue=38.5}" 
-                                              CellHeight="{Binding CellHeight, FallbackValue=8.6}"/>
+                                              CellWidth="{Binding CellWidth, FallbackValue=38}" 
+                                              CellHeight="{Binding CellHeight, FallbackValue=8}"/>
         </Grid.Resources>
         <i:Interaction.Behaviors>
             <converters:BindableSizeBehavior Width="{Binding ScreenWidth, Mode=TwoWay}" Height="{Binding ScreenHeight, Mode=TwoWay}"/>

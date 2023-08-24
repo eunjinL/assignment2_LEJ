@@ -8,33 +8,38 @@
         xmlns:views="clr-namespace:assignment2_LEJ.Views"
         mc:Ignorable="d"
         Title="MainView" Height="1000" Width="1600">
-    <Window.DataContext>
-        <viewModels:MainViewModel />
-    </Window.DataContext>
     <Grid>
-        <!-- Row Definitions -->
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Column Definitions -->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Wafer Map Viewer -->
-        <views:WaferMapView Grid.Row="0" Grid.Column="0"/>
+        <Border Background="LightGray" Grid.Row="0" Grid.Column="0" Padding="5">
+            <TextBlock Text="Wafer Map Viewer"/>
+        </Border>
+        <views:WaferMapView Grid.Row="1" Grid.Column="0"/>
 
-        <!-- Defect Image Viewer -->
-        <views:DefectImageView Grid.Row="0" Grid.Column="1"/>
+        <Border Background="LightGray" Grid.Row="0" Grid.Column="1" Padding="5">
+            <TextBlock Text="Defect Image Viewer"/>
+        </Border>
+        <views:DefectImageView Grid.Row="1" Grid.Column="1"/>
 
-        <!-- File List Viewer -->
-        <views:FileListView Grid.Row="1" Grid.Column="0"/>
+        <Border Background="LightGray" Grid.Row="2" Grid.Column="0" Padding="5">
+            <TextBlock Text="File List Viewer"/>
+        </Border>
+        <views:FileListView Grid.Row="3" Grid.Column="0"/>
 
-        <!-- Defect Info Viewer -->
-        <views:DefectInfoView Grid.Row="1" Grid.Column="1"/>
-
+        <Border Background="LightGray" Grid.Row="2" Grid.Column="1" Padding="5">
+            <TextBlock Text="Defect Info Viewer"/>
+        </Border>
+        <views:DefectInfoView Grid.Row="3" Grid.Column="1"/>
     </Grid>
+
 </Window>

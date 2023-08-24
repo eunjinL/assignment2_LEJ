@@ -48,6 +48,50 @@
                 </TextBlock.Text>
             </TextBlock>
         </StackPanel>
+        <!-- 전체 die 순서 넘기기 -->
+        <DockPanel 
+            Grid.Row="0" 
+            Grid.Column="1" 
+            HorizontalAlignment="Center" 
+            VerticalAlignment="Stretch"
+            Width="400">
+            <Button 
+                Content="←" 
+                Command="{Binding PreviousDieCommand}" 
+                DockPanel.Dock="Left"
+                Margin="30,20,10,20"/>
+            <Button 
+                Content="→" 
+                Command="{Binding NextDieCommand}" 
+                DockPanel.Dock="Right"
+                Margin="30,20,10,20"/>
+            <TextBlock 
+                Text="{Binding DieDisplayText}" 
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center" />
+        </DockPanel>
+        <!-- die 내에 있는 defect 순서 넘기기 -->
+        <DockPanel 
+            Grid.Row="1" 
+            Grid.Column="1" 
+            HorizontalAlignment="Center" 
+            VerticalAlignment="Stretch"
+            Width="400">
+            <Button 
+                Content="←" 
+                Command="{Binding PreviousDieDefectCommand}" 
+                DockPanel.Dock="Left"
+                Margin="30,20,10,20"/>
+            <Button 
+                Content="→" 
+                Command="{Binding NextDieDefectCommand}" 
+                DockPanel.Dock="Right"
+                Margin="30,20,10,20"/>
+            <TextBlock 
+                Text="{Binding DieDefectDisplayText}" 
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center" />
+        </DockPanel>
         <!-- 전체 defect 순서 넘기기 -->
         <DockPanel 
             Grid.Row="2" 

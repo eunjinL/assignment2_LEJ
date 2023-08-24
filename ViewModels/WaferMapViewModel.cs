@@ -108,7 +108,7 @@ namespace assignment2_LEJ.ViewModels
                 foreach (var die in Wafer.Dies)
                 {
                     int gridX = die.Coordinate.Item1 - Wafer.XMin;
-                    int gridY = die.Coordinate.Item2 - Wafer.YMin;
+                    int gridY = Math.Abs(die.Coordinate.Item2 - Wafer.YMax);
                     die.GridCoordinate = new Tuple<int, int>(gridX, gridY);
 
                     dieCoordinates.Add(die.GridCoordinate);
@@ -120,8 +120,8 @@ namespace assignment2_LEJ.ViewModels
         {
             if (Wafer == null) return;
 
-            CellWidth = (ScreenWidth-20) / (Wafer.GridWidth + 1);
-            CellHeight = (ScreenHeight-20) / (Wafer.GridHeight + 1);
+            CellWidth = (ScreenWidth-25) / (Wafer.GridWidth + 1);
+            CellHeight = (ScreenHeight-25) / (Wafer.GridHeight + 1);
         }
 
 

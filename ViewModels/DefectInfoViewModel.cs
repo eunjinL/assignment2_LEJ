@@ -15,12 +15,18 @@ namespace assignment2_LEJ.ViewModels
     {
         private ObservableCollection<Defect> defects;
         private Defect selectedDefect;
+        private Die selectedDie;
         private Wafer wafer;
         private int currentDefectIndex;
-        // private string defectDisplayText;
+        private int currentDieIndex;
+        private int currentDieDefectIndex;
 
         public ICommand PreviousDefectCommand { get; }
         public ICommand NextDefectCommand { get; }
+        public ICommand PreviousDieCommand { get; }
+        public ICommand NextDieCommand { get; }
+        public ICommand PreviousDieDefectCommand { get; }
+        public ICommand NextDieDefectCommand { get; }
         public int CurrentDefectIndex
         {
             get { return currentDefectIndex; }
@@ -34,11 +40,60 @@ namespace assignment2_LEJ.ViewModels
                 }
             }
         }
+        public int CurrentDieIndex
+        {
+            get { return currentDieIndex; }
+            set
+            {
+                if (currentDieIndex != value)
+                {
+                    currentDieIndex = value;
+                    OnPropertyChanged(nameof(currentDieIndex));
+                    OnPropertyChanged(nameof(DieDisplayText));
+                    SelectedDie = Wafer.Dies[currentDieIndex];
+
+                    if (SelectedDie.Defects.Any())
+                    {
+                        SelectedDefect = SelectedDie.Defects[0];
+                    }
+                    else
+                    {
+                        SelectedDefect = null;
+                    }
+
+                    OnPropertyChanged(nameof(TotalDieDefects));
+                    OnPropertyChanged(nameof(DieDefectDisplayText));
+                }
+            }
+        }
+        public int CurrentDieDefectIndex
+        {
+            get { return currentDieDefectIndex; }
+            set
+            {
+                if (currentDieDefectIndex != value)
+                {
+                    currentDieDefectIndex = value;
+                    OnPropertyChanged(nameof(CurrentDieDefectIndex));
+                    OnPropertyChanged(nameof(DieDefectDisplayText));
+                }
+            }
+        }
+
 
         public int TotalDefects
         {
             get { return Defects.Count; }
         }
+        public int TotalDies
+        {
+            get { return Wafer?.Dies?.Count ?? 0; }
+        }
+        public int TotalDieDefects
+        {
+            get { return SelectedDie?.Defects?.Count ?? 0; }
+        }
+
 
 
         public Wafer Wafer
@@ -49,8 +104,10 @@ namespace assignment2_LEJ.ViewModels
                 wafer = value;
                 OnPropertyChanged(nameof(Wafer));
                 LoadDefectsFromWafer();
-                OnPropertyChanged(nameof(DefectDisplayText));  
+                OnPropertyChanged(nameof(DefectDisplayText));
+                OnPropertyChanged(nameof(DieDisplayText));
                 OnPropertyChanged(nameof(TotalDefects));
+                OnPropertyChanged(nameof(TotalDies));
             }
         }
 
@@ -63,11 +120,37 @@ namespace assignment2_LEJ.ViewModels
                 OnPropertyChanged(nameof(Defects));
             }
         }
+        public string DieDisplayText
+        {
+            get
+            {
+                if (TotalDies == 0)
+                {
+                    return $"0/0";
+                }
+                return $"{CurrentDieIndex + 1}/{TotalDies}";
+            }
+        }
         public string DefectDisplayText
         {
             get
             {
+                if (TotalDefects == 0)
+                {
+                    return $"0/0";
+                }
                 return $"{CurrentDefectIndex + 1}/{TotalDefects}";
+            }
+        }
+        public string DieDefectDisplayText
+        {
+            get
+            {
+                if (TotalDieDefects == 0)
+                {
+                    return $"0/0";
+                }
+                return $"{CurrentDieDefectIndex + 1}/{TotalDieDefects}";
             }
         }
 
@@ -80,9 +163,35 @@ namespace assignment2_LEJ.ViewModels
                 {
                     selectedDefect = value;
                     OnPropertyChanged(nameof(SelectedDefect));
+                    CurrentDieDefectIndex = 0;
                     UpdateCurrentDefectIndex();
+                    UpdateCurrentDieDefectIndex();
                 }
             }
+        }
+        public Die SelectedDie
+        {
+            get => selectedDie;
+            set
+            {
+                if (selectedDie != value)
+                {
+                    selectedDie = value;
+                    OnPropertyChanged(nameof(SelectedDie));
+                    UpdateCurrentDieIndex();
+                }
+            }
+        }
+        public DefectInfoViewModel()
+        {
+            Messenger.Default.Register<Wafer>(this, LoadWaferData);
+            defects = new ObservableCollection<Defect>();
+            PreviousDefectCommand = new RelayCommand(PreviousDefect);
+            NextDefectCommand = new RelayCommand(NextDefect);
+            PreviousDieCommand = new RelayCommand(PreviousDie);
+            NextDieCommand = new RelayCommand(NextDie);
+            PreviousDieDefectCommand = new RelayCommand(PreviousDieDefect);
+            NextDieDefectCommand = new RelayCommand(NextDieDefect);
         }
         private void UpdateCurrentDefectIndex()
         {
@@ -92,12 +201,19 @@ namespace assignment2_LEJ.ViewModels
                 Messenger.Default.Send<int>(currentDefectIndex);
             }
         }
-        public DefectInfoViewModel()
+        private void UpdateCurrentDieIndex()
         {
-            Messenger.Default.Register<Wafer>(this, LoadWaferData);
-            defects = new ObservableCollection<Defect>();
-            PreviousDefectCommand = new RelayCommand(PreviousDefect);
-            NextDefectCommand = new RelayCommand(NextDefect);
+            if (Wafer.Dies != null && selectedDie != null)
+            {
+                CurrentDieIndex = Wafer.Dies.IndexOf(selectedDie);
+            }
+        }
+        private void UpdateCurrentDieDefectIndex()
+        {
+            if (SelectedDie?.Defects != null && SelectedDefect != null)
+            {
+                CurrentDieDefectIndex = SelectedDie.Defects.IndexOf(SelectedDefect);
+            }
         }
 
         private void LoadWaferData(Wafer loadedWafer)
@@ -138,6 +254,42 @@ namespace assignment2_LEJ.ViewModels
                 CurrentDefectIndex++;
                 SelectedDefect = Defects[CurrentDefectIndex];
                 Messenger.Default.Send<int>(currentDefectIndex);
+            }
+        }
+        private void PreviousDie()
+        {
+            if (CurrentDieIndex > 0)
+            {
+                CurrentDieIndex--;
+                SelectedDie = Wafer.Dies[CurrentDieIndex];
+            }
+        }
+
+        private void NextDie()
+        {
+            if (CurrentDieIndex < TotalDies - 1)
+            {
+                CurrentDieIndex++;
+                SelectedDie = Wafer.Dies[CurrentDieIndex];
+            }
+        }
+        private void PreviousDieDefect()
+        {
+            if (CurrentDieDefectIndex > 0)
+            {
+                CurrentDieDefectIndex--;
+                SelectedDefect = SelectedDie.Defects[CurrentDieDefectIndex];
+                UpdateCurrentDieDefectIndex();
+            }
+        }
+
+        private void NextDieDefect()
+        {
+            if (CurrentDieDefectIndex < TotalDieDefects - 1)
+            {
+                CurrentDieDefectIndex++;
+                SelectedDefect = SelectedDie.Defects[CurrentDieDefectIndex];
+                UpdateCurrentDieDefectIndex();
             }
         }
 

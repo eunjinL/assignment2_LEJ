@@ -18,12 +18,13 @@ namespace assignment2_LEJ.ViewModels
     public class FileService : INotifyPropertyChanged
     {
         public ICommand OpenCommand { get; private set; }
-        public ObservableCollection<string> FileList { get; private set; }
-        private string selectedFile;
+        public ObservableCollection<FileItem> FileList { get; private set; }
+        private FileItem selectedFileItem;
         private static FileService instance;
         private string folderPath;
         private Wafer currentLoadedWafer;
         private bool defectShow = true;
+
         public Wafer CurrentLoadedWafer
         {
             get { return currentLoadedWafer; }
@@ -46,16 +47,17 @@ namespace assignment2_LEJ.ViewModels
                 return instance;
             }
         }
-        public string SelectedFile
+        public FileItem SelectedFileItem
         {
-            get { return selectedFile; }
+            get { return selectedFileItem; }
             set
             {
-                if (selectedFile != value)
+                if (selectedFileItem != value)
                 {
-                    selectedFile = value;
-                    OnPropertyChanged("SelectedFile");
-                    LoadSelectedFile(value);
+                    selectedFileItem = value;
+                    OnPropertyChanged("SelectedFileItem");
+                    if (value != null)
+                        LoadSelectedFile(value.FilePath);
                     Messenger.Default.Send<bool>(defectShow);
                 }
             }
@@ -63,7 +65,7 @@ namespace assignment2_LEJ.ViewModels
         public FileService()
         {
             OpenCommand = new RelayCommand(OpenFolder);
-            FileList = new ObservableCollection<string>();
+            FileList = new ObservableCollection<FileItem>();
         }
 
         private void OpenFolder(object parameter)
@@ -92,7 +94,14 @@ namespace assignment2_LEJ.ViewModels
             FileList.Clear();
             foreach (var file in files)
             {
-                FileList.Add(file);
+                var fileInfo = new FileInfo(file);
+                var fileItem = new FileItem
+                {
+                    FileName = fileInfo.Name,
+                    LastModifiedDate = fileInfo.LastWriteTime.ToShortDateString(),
+                    FilePath = fileInfo.FullName
+                };
+                FileList.Add(fileItem);
             }
         }
 

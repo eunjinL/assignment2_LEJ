@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:assignment2_LEJ.Views"
         xmlns:viewModels="clr-namespace:assignment2_LEJ.ViewModels"
         mc:Ignorable="d"
-        Background="White">
+        Background="White" >
     <UserControl.DataContext>
         <viewModels:FileService />
     </UserControl.DataContext>
@@ -55,10 +55,21 @@
                 Command="{Binding OpenCommand}"
                 CommandParameter="0"/>
         
-        <ListBox ItemsSource="{Binding FileList}" 
-                 SelectedItem="{Binding SelectedFile}" 
-                 Grid.Row="1" 
-                 Grid.Column="0"
-                 Grid.ColumnSpan="4"/>
+        <ListView ItemsSource="{Binding FileList}" 
+                  SelectedItem="{Binding SelectedFileItem}"
+                  Grid.Row="1" 
+                  Grid.Column="2"
+                  Grid.ColumnSpan="4">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Name" 
+                                    DisplayMemberBinding="{Binding FileName}"
+                                    Width="200" />
+                    <GridViewColumn Header="Date" 
+                                    DisplayMemberBinding="{Binding LastModifiedDate}"
+                                    Width="300" />
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </UserControl>
