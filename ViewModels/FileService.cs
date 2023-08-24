@@ -23,6 +23,7 @@ namespace assignment2_LEJ.ViewModels
         private static FileService instance;
         private string folderPath;
         private Wafer currentLoadedWafer;
+        private bool defectShow = true;
         public Wafer CurrentLoadedWafer
         {
             get { return currentLoadedWafer; }
@@ -55,6 +56,7 @@ namespace assignment2_LEJ.ViewModels
                     selectedFile = value;
                     OnPropertyChanged("SelectedFile");
                     LoadSelectedFile(value);
+                    Messenger.Default.Send<bool>(defectShow);
                 }
             }
         }

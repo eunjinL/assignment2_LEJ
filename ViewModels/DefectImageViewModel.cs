@@ -17,6 +17,7 @@ namespace assignment2_LEJ.ViewModels
         private string receivedFolderPath;
         private BitmapSource loadedImage;
         private TiffBitmapDecoder tiffDecoder;
+        private bool receivedDefectShow = false;
         public string ReceivedFolderPath
         {
             get { return receivedFolderPath; }
@@ -55,6 +56,19 @@ namespace assignment2_LEJ.ViewModels
                 }
             }
         }
+        public bool ReceivedDefectShow
+        {
+            get { return receivedDefectShow; }
+            set
+            {
+                if (receivedDefectShow != value)
+                {
+                    receivedDefectShow = value;
+                    OnPropertyChanged(nameof(receivedDefectShow));
+                    LoadTiffImage();
+                }
+            }
+        }
         private void LoadTiffImage()
         {
             if (!Directory.Exists(receivedFolderPath))
@@ -67,7 +81,7 @@ namespace assignment2_LEJ.ViewModels
             var tifFile = tifFiles[0];
             tiffDecoder = new TiffBitmapDecoder(new Uri(tifFile, UriKind.Absolute), BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
 
-            if (tiffDecoder.Frames.Count > 0)
+            if (tiffDecoder.Frames.Count > 0 && receivedDefectShow)
             {
                 LoadedImage = tiffDecoder.Frames[receivedDefectID];
             }
@@ -76,6 +90,7 @@ namespace assignment2_LEJ.ViewModels
         {
             Messenger.Default.Register<int>(this, LoadDefectId);
             Messenger.Default.Register<string>(this, LoadFolderPath);
+            Messenger.Default.Register<bool>(this, LoadDefectShow);
         }
 
         private void LoadDefectId(int currentDefectIndex)
@@ -85,6 +100,10 @@ namespace assignment2_LEJ.ViewModels
         private void LoadFolderPath(string folderPath)
         {
             ReceivedFolderPath = folderPath;
+        }
+        private void LoadDefectShow(bool defectShow)
+        {
+            receivedDefectShow = defectShow;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
