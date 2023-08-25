@@ -85,12 +85,14 @@ namespace assignment2_LEJ.ViewModels
         {
             dieCoordinates = new ObservableCollection<Tuple<int, int>>();
             Messenger.Default.Register<Wafer>(this, LoadWaferData);
+            UpdateDieCoordinates();
         }
 
         private void LoadWaferData(Wafer loadedWafer)
         {
             Wafer = loadedWafer;
             UpdateDieSize();
+            UpdateDieCoordinates();
         }
 
         private void UpdateDieCoordinates()
@@ -124,7 +126,7 @@ namespace assignment2_LEJ.ViewModels
             if (Wafer == null) return;
 
             CellWidth = (ScreenWidth - 25) / (Wafer.GridWidth + 1);
-            CellHeight = (ScreenHeight - 25) / (Wafer.GridHeight + 1);
+            CellHeight = (ScreenHeight - 35) / (Wafer.GridHeight + 1);
         }
 
 

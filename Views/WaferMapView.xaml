@@ -41,8 +41,8 @@
 
                         <Rectangle.RenderTransform>
                             <TranslateTransform 
-                X="{Binding Die.GridCoordinate.Item1}" 
-                Y="{Binding Die.GridCoordinate.Item2}" />
+                                X="{Binding Die.GridCoordinate.Item1}" 
+                                Y="{Binding Die.GridCoordinate.Item2}" />
                         </Rectangle.RenderTransform>
                     </Rectangle>
                 </DataTemplate>
