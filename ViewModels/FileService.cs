@@ -17,6 +17,7 @@ namespace assignment2_LEJ.ViewModels
 {
     public class FileService : INotifyPropertyChanged
     {
+        #region[필드]
         public ICommand OpenCommand { get; private set; }
         public ObservableCollection<FileItem> FileList { get; private set; }
         private FileItem selectedFileItem;
@@ -24,7 +25,15 @@ namespace assignment2_LEJ.ViewModels
         private string folderPath;
         private Wafer currentLoadedWafer;
         private bool defectShow = true;
+        public event PropertyChangedEventHandler PropertyChanged;
+        #endregion
 
+        #region[속성]
+        /**
+         * @brief 현재 로드된 웨이퍼를 가져오거나 설정
+         * @param value 새로운 로드된 웨이퍼
+         * @return 없음
+         */
         public Wafer CurrentLoadedWafer
         {
             get { return currentLoadedWafer; }
@@ -37,7 +46,6 @@ namespace assignment2_LEJ.ViewModels
                 }
             }
         }
-
         public static FileService Instance
         {
             get
@@ -58,17 +66,21 @@ namespace assignment2_LEJ.ViewModels
                     OnPropertyChanged("SelectedFileItem");
                     if (value != null)
                         LoadSelectedFile(value.FilePath);
-                    //Messenger.Default.Send<bool>(defectShow);
                     SharedData.Instance.DefectShowData = defectShow;
                 }
             }
         }
+        #endregion
+
+        #region[생성자]
         public FileService()
         {
             OpenCommand = new RelayCommand(OpenFolder);
             FileList = new ObservableCollection<FileItem>();
         }
+        #endregion
 
+        #region[public 메서드]
         private void OpenFolder(object parameter)
         {
             FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
@@ -77,7 +89,6 @@ namespace assignment2_LEJ.ViewModels
             {
                 folderPath = folderBrowser.SelectedPath;
                 LoadFiles(folderPath);
-                // Messenger.Default.Send<string>(folderPath);
                 SharedData.Instance.FolderPath = folderPath;
             }
         }
@@ -88,7 +99,6 @@ namespace assignment2_LEJ.ViewModels
                 LoadFromFile(filePath);
             }
         }
-
         private void LoadFiles(string folderPath)
         {
             var files = Directory.GetFiles(folderPath, "*.001");
@@ -106,7 +116,6 @@ namespace assignment2_LEJ.ViewModels
                 FileList.Add(fileItem);
             }
         }
-
         public Wafer LoadFromFile(string filePath)
         {
             Wafer wafer = new Wafer();
@@ -323,11 +332,14 @@ namespace assignment2_LEJ.ViewModels
             SharedData.Instance.WaferData = wafer;
             return wafer;
         }
+        #endregion
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        #region[protected, private 메서드]
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        #endregion
     }
+
 }

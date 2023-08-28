@@ -10,7 +10,11 @@ namespace assignment2_LEJ.ViewModels
 {
     public class DieViewModel : INotifyPropertyChanged
     {
+        #region[필드]
         private Die die;
+        public event PropertyChangedEventHandler PropertyChanged;
+        #endregion
+        #region[속성]
         public Die Die
         {
             get => die;
@@ -20,7 +24,6 @@ namespace assignment2_LEJ.ViewModels
                 OnPropertyChanged(nameof(Die));
             }
         }
-
         public Tuple<int, int> GridCoordinate
         {
             get
@@ -32,12 +35,19 @@ namespace assignment2_LEJ.ViewModels
                 return null;
             }
         }
+        #endregion
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        #region[protected, private 메서드]
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        #endregion
+
+
+
+        
+        
     }
 
 }

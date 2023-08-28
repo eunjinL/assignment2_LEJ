@@ -13,11 +13,20 @@ namespace assignment2_LEJ.ViewModels
 {
     public class DefectImageViewModel : INotifyPropertyChanged
     {
+        #region[필드]
         private int receivedDefectID = 2;
         private string receivedFolderPath;
         private BitmapSource loadedImage;
         private TiffBitmapDecoder tiffDecoder;
         private bool receivedDefectShow = false;
+        public event PropertyChangedEventHandler PropertyChanged;
+        #endregion
+        #region[속성]
+        /**
+        * @brief 받은 폴더 경로 속성
+        * @return 현재의 폴더 경로
+        * 2023-08-28|이은진|첫 버전 작성
+        */
         public string ReceivedFolderPath
         {
             get { return receivedFolderPath; }
@@ -31,6 +40,11 @@ namespace assignment2_LEJ.ViewModels
                 }
             }
         }
+        /**
+        * @brief 받은 결함 ID 속성
+        * @return 현재의 결함 ID
+        * 2023-08-28|이은진|첫 버전 작성
+        */
         public int ReceivedDefectID
         {
             get { return receivedDefectID; }
@@ -40,10 +54,15 @@ namespace assignment2_LEJ.ViewModels
                 {
                     receivedDefectID = value;
                     OnPropertyChanged(nameof(receivedDefectID));
-                    LoadTiffImage(); 
+                    LoadTiffImage();
                 }
             }
         }
+        /**
+        * @brief 로드된 이미지 속성
+        * @return 현재 로드된 이미지
+        * 2023-08-28|이은진|첫 버전 작성
+        */
         public BitmapSource LoadedImage
         {
             get { return loadedImage; }
@@ -56,6 +75,11 @@ namespace assignment2_LEJ.ViewModels
                 }
             }
         }
+        /**
+        * @brief 결함 표시 여부 속성
+        * @return 현재의 결함 표시 여부
+        * 2023-08-28|이은진|첫 버전 작성
+        */
         public bool ReceivedDefectShow
         {
             get { return receivedDefectShow; }
@@ -69,6 +93,11 @@ namespace assignment2_LEJ.ViewModels
                 }
             }
         }
+        /**
+        * @brief TIFF 이미지 로드 메서드
+        * @return 없음
+        * 2023-08-28|이은진|첫 버전 작성
+        */
         private void LoadTiffImage()
         {
             if (!Directory.Exists(receivedFolderPath))
@@ -86,10 +115,22 @@ namespace assignment2_LEJ.ViewModels
                 LoadedImage = tiffDecoder.Frames[receivedDefectID];
             }
         }
+        #endregion
+        #region[생성자]
         public DefectImageViewModel()
         {
             SharedData.Instance.PropertyChanged += SharedData_PropertyChanged;
         }
+        #endregion
+
+        #region[protected, private 메서드]
+        /**
+        * @brief 데이터 변경 이벤트 핸들러
+        * @param sender 이벤트를 발생시킨 객체
+        * @param e PropertyChangedEventArgs 객체로, 변경된 속성 정보 포함
+        * @return 없음
+        * 2023-08-28|이은진|첫 버전 작성
+        */
         private void SharedData_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "DefectIndexData")
@@ -105,10 +146,20 @@ namespace assignment2_LEJ.ViewModels
                 ReceivedFolderPath = SharedData.Instance.FolderPath;
             }
         }
-        public event PropertyChangedEventHandler PropertyChanged;
+        /**
+        * @brief 속성 변경 이벤트 발생 메서드
+        * @param propertyName 변경된 속성의 이름
+        * @return 없음
+        * 2023-08-28|이은진|첫 버전 작성
+        */
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        #endregion
+
+        
+        
     }
+
 }

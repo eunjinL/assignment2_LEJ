@@ -13,6 +13,7 @@ namespace assignment2_LEJ.ViewModels
 {
     public class DefectInfoViewModel : INotifyPropertyChanged
     {
+        #region[필드]
         private ObservableCollection<Defect> defects;
         private Defect selectedDefect;
         private Die selectedDie;
@@ -20,7 +21,9 @@ namespace assignment2_LEJ.ViewModels
         private int currentDefectIndex;
         private int currentDieIndex;
         private int currentDieDefectIndex;
-
+        public event PropertyChangedEventHandler PropertyChanged;
+        #endregion
+        #region[속성]
         public ICommand PreviousDefectCommand { get; }
         public ICommand NextDefectCommand { get; }
         public ICommand PreviousDieCommand { get; }
@@ -79,8 +82,6 @@ namespace assignment2_LEJ.ViewModels
                 }
             }
         }
-
-
         public int TotalDefects
         {
             get { return Defects.Count; }
@@ -93,9 +94,6 @@ namespace assignment2_LEJ.ViewModels
         {
             get { return SelectedDie?.Defects?.Count ?? 0; }
         }
-
-
-
         public Wafer Wafer
         {
             get { return wafer; }
@@ -110,7 +108,6 @@ namespace assignment2_LEJ.ViewModels
                 OnPropertyChanged(nameof(TotalDies));
             }
         }
-
         public ObservableCollection<Defect> Defects
         {
             get => defects;
@@ -182,6 +179,8 @@ namespace assignment2_LEJ.ViewModels
                 }
             }
         }
+        #endregion
+        #region[생성자]
         public DefectInfoViewModel()
         {
             LoadWaferData(SharedData.Instance.WaferData);
@@ -194,6 +193,18 @@ namespace assignment2_LEJ.ViewModels
             PreviousDieDefectCommand = new RelayCommand(PreviousDieDefect);
             NextDieDefectCommand = new RelayCommand(NextDieDefect);
         }
+        #endregion
+        #region[public 메서드]
+
+        #endregion
+        #region[protected, private 메서드]
+        /**
+        * @brief SharedData의 속성 변경 이벤트 핸들러입니다.
+        * @param sender 이벤트를 발생시킨 객체
+        * @param e PropertyChangedEventArgs 객체
+        * @return 없음
+        * 2023-08-28|이은진|초안 작성
+        */
         private void SharedData_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "WaferData")
@@ -201,6 +212,12 @@ namespace assignment2_LEJ.ViewModels
                 LoadWaferData(SharedData.Instance.WaferData);
             }
         }
+        /**
+        * @brief 현재 선택된 결함 인덱스를 업데이트합니다.
+        * @param 없음
+        * @return 없음
+        * 2023-08-28|이은진|초안 작성
+        */
         private void UpdateCurrentDefectIndex()
         {
             if (Defects != null && selectedDefect != null)
@@ -209,6 +226,12 @@ namespace assignment2_LEJ.ViewModels
                 SharedData.Instance.DefectIndexData = currentDefectIndex;
             }
         }
+        /**
+        * @brief 현재 선택된 다이 인덱스를 업데이트합니다.
+        * @param 없음
+        * @return 없음
+        * 2023-08-28|이은진|초안 작성
+        */
         private void UpdateCurrentDieIndex()
         {
             if (Wafer.Dies != null && selectedDie != null)
@@ -216,6 +239,12 @@ namespace assignment2_LEJ.ViewModels
                 CurrentDieIndex = Wafer.Dies.IndexOf(selectedDie);
             }
         }
+        /**
+        * @brief 현재 선택된 다이의 결함 인덱스를 업데이트합니다.
+        * @param 없음
+        * @return 없음
+        * 2023-08-28|이은진|초안 작성
+        */
         private void UpdateCurrentDieDefectIndex()
         {
             if (SelectedDie?.Defects != null && SelectedDefect != null)
@@ -223,12 +252,22 @@ namespace assignment2_LEJ.ViewModels
                 CurrentDieDefectIndex = SelectedDie.Defects.IndexOf(SelectedDefect);
             }
         }
-
+        /**
+        * @brief Wafer 데이터를 로드합니다.
+        * @param loadedWafer 로드된 Wafer 객체
+        * @return 없음
+        * 2023-08-28|이은진|초안 작성
+        */
         private void LoadWaferData(Wafer loadedWafer)
         {
             Wafer = loadedWafer;
         }
-
+        /**
+        * @brief Wafer에서 결함 데이터를 로드합니다.
+        * @param 없음
+        * @return 없음
+        * 2023-08-28|이은진|초안 작성
+        */
         private void LoadDefectsFromWafer()
         {
             if (Wafer != null)
@@ -244,7 +283,12 @@ namespace assignment2_LEJ.ViewModels
                 Defects = new ObservableCollection<Defect>(allDefects);
             }
         }
-
+        /**
+        * @brief 이전 결함을 선택합니다.
+        * @param 없음
+        * @return 없음
+        * 2023-08-28|이은진|초안 작성
+        */
         private void PreviousDefect()
         {
             if (CurrentDefectIndex > 0)
@@ -254,7 +298,12 @@ namespace assignment2_LEJ.ViewModels
                 SharedData.Instance.DefectIndexData = currentDefectIndex;
             }
         }
-
+        /**
+        * @brief 다음 결함을 선택합니다.
+        * @param 없음
+        * @return 없음
+        * 2023-08-28|이은진|초안 작성
+        */
         private void NextDefect()
         {
             if (CurrentDefectIndex < TotalDefects - 1)
@@ -264,6 +313,12 @@ namespace assignment2_LEJ.ViewModels
                 SharedData.Instance.DefectIndexData = currentDefectIndex;
             }
         }
+        /**
+        * @brief 이전 다이를 선택합니다.
+        * @param 없음
+        * @return 없음
+        * 2023-08-28|이은진|초안 작성
+        */
         private void PreviousDie()
         {
             if (CurrentDieIndex > 0)
@@ -272,7 +327,12 @@ namespace assignment2_LEJ.ViewModels
                 SelectedDie = Wafer.Dies[CurrentDieIndex];
             }
         }
-
+        /**
+        * @brief 다음 다이를 선택합니다.
+        * @param 없음
+        * @return 없음
+        * 2023-08-28|이은진|초안 작성
+        */
         private void NextDie()
         {
             if (CurrentDieIndex < TotalDies - 1)
@@ -281,6 +341,12 @@ namespace assignment2_LEJ.ViewModels
                 SelectedDie = Wafer.Dies[CurrentDieIndex];
             }
         }
+        /**
+        * @brief 이전 다이의 결함을 선택합니다.
+        * @param 없음
+        * @return 없음
+        * 2023-08-28|이은진|초안 작성
+        */
         private void PreviousDieDefect()
         {
             if (CurrentDieDefectIndex > 0)
@@ -290,7 +356,12 @@ namespace assignment2_LEJ.ViewModels
                 UpdateCurrentDieDefectIndex();
             }
         }
-
+        /**
+        * @brief 다음 다이의 결함을 선택합니다.
+        * @param 없음
+        * @return 없음
+        * 2023-08-28|이은진|초안 작성
+        */
         private void NextDieDefect()
         {
             if (CurrentDieDefectIndex < TotalDieDefects - 1)
@@ -300,13 +371,21 @@ namespace assignment2_LEJ.ViewModels
                 UpdateCurrentDieDefectIndex();
             }
         }
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
+        /**
+        * @brief 속성 변경 이벤트를 호출합니다.
+        * @param propertyName 변경된 속성의 이름
+        * @return 없음
+        * 2023-08-28|이은진|초안 작성
+        */
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        #endregion
+
+
+
+
     }
 
 
