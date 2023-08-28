@@ -4,13 +4,40 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:assignment2_LEJ.Views"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
         xmlns:viewModels="clr-namespace:assignment2_LEJ.ViewModels"
         mc:Ignorable="d"
         Background="White">
     <UserControl.DataContext>
         <viewModels:DefectImageViewModel />
     </UserControl.DataContext>
+    
+    <!--<Grid>
+        <Image Source="{Binding LoadedImage}" Stretch="Uniform">
+            <Image.LayoutTransform>
+                <ScaleTransform ScaleX="{Binding Scale}" ScaleY="{Binding Scale}"/>
+            </Image.LayoutTransform>
+        </Image>
+        <Slider x:Name="scaleSlider" Grid.Row="1" Width="200" Minimum="0.1" Maximum="2" Value="1" TickFrequency="0.1" TickPlacement="BottomRight"/>
+    </Grid>-->
     <Grid>
-        <Image Source="{Binding LoadedImage}" Stretch="Uniform" />
+        <Image Source="{Binding LoadedImage}" Stretch="Uniform">
+            <Image.LayoutTransform>
+                <ScaleTransform ScaleX="{Binding Scale}" ScaleY="{Binding Scale}"/>
+            </Image.LayoutTransform>
+
+            <b:Interaction.Triggers>
+                <b:EventTrigger EventName="MouseWheel">
+                    <b:InvokeCommandAction Command="{Binding MouseWheelCommand}"
+                                   CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=EventArgs}"/>
+                </b:EventTrigger>
+            </b:Interaction.Triggers>
+        </Image>
+
+
+        <Slider x:Name="scaleSlider" Width="200" Minimum="0.1" Maximum="2" Value="{Binding Scale}" TickFrequency="0.1" TickPlacement="BottomRight">
+            <!-- Slider XAML here -->
+        </Slider>
     </Grid>
 </UserControl>

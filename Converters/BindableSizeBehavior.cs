@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Interactivity;
+using Microsoft.Xaml.Behaviors;
 
 namespace assignment2_LEJ.Converters
 {
-    public class BindableSizeBehavior : Behavior<FrameworkElement>
+    public class BindableSizeBehavior : TriggerAction<FrameworkElement>
     {
         public static readonly DependencyProperty WidthProperty =
             DependencyProperty.Register("Width", typeof(double), typeof(BindableSizeBehavior));
@@ -44,6 +44,14 @@ namespace assignment2_LEJ.Converters
         {
             Width = e.NewSize.Width;
             Height = e.NewSize.Height;
+        }
+        protected override void Invoke(object parameter)
+        {
+            if (parameter is SizeChangedEventArgs sizeChangedEventArgs)
+            {
+                Width = sizeChangedEventArgs.NewSize.Width;
+                Height = sizeChangedEventArgs.NewSize.Height;
+            }
         }
     }
 }

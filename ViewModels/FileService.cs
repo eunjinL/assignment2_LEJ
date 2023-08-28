@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Win32;
 using System.Globalization;
-using GalaSoft.MvvmLight.Messaging;
 using System.Windows.Forms;
 
 namespace assignment2_LEJ.ViewModels
