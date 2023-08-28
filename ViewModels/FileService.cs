@@ -58,7 +58,8 @@ namespace assignment2_LEJ.ViewModels
                     OnPropertyChanged("SelectedFileItem");
                     if (value != null)
                         LoadSelectedFile(value.FilePath);
-                    Messenger.Default.Send<bool>(defectShow);
+                    //Messenger.Default.Send<bool>(defectShow);
+                    SharedData.Instance.DefectShowData = defectShow;
                 }
             }
         }
@@ -76,7 +77,8 @@ namespace assignment2_LEJ.ViewModels
             {
                 folderPath = folderBrowser.SelectedPath;
                 LoadFiles(folderPath);
-                Messenger.Default.Send<string>(folderPath);
+                // Messenger.Default.Send<string>(folderPath);
+                SharedData.Instance.FolderPath = folderPath;
             }
         }
         private void LoadSelectedFile(string filePath)
@@ -318,7 +320,7 @@ namespace assignment2_LEJ.ViewModels
                 }
             }
             CurrentLoadedWafer = wafer;
-            Messenger.Default.Send<Wafer>(wafer);
+            SharedData.Instance.WaferData = wafer;
             return wafer;
         }
 

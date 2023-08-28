@@ -184,7 +184,8 @@ namespace assignment2_LEJ.ViewModels
         }
         public DefectInfoViewModel()
         {
-            Messenger.Default.Register<Wafer>(this, LoadWaferData);
+            LoadWaferData(SharedData.Instance.WaferData);
+            SharedData.Instance.PropertyChanged += SharedData_PropertyChanged;
             defects = new ObservableCollection<Defect>();
             PreviousDefectCommand = new RelayCommand(PreviousDefect);
             NextDefectCommand = new RelayCommand(NextDefect);
@@ -193,12 +194,19 @@ namespace assignment2_LEJ.ViewModels
             PreviousDieDefectCommand = new RelayCommand(PreviousDieDefect);
             NextDieDefectCommand = new RelayCommand(NextDieDefect);
         }
+        private void SharedData_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "WaferData")
+            {
+                LoadWaferData(SharedData.Instance.WaferData);
+            }
+        }
         private void UpdateCurrentDefectIndex()
         {
             if (Defects != null && selectedDefect != null)
             {
                 CurrentDefectIndex = Defects.IndexOf(selectedDefect);
-                Messenger.Default.Send<int>(currentDefectIndex);
+                SharedData.Instance.DefectIndexData = currentDefectIndex;
             }
         }
         private void UpdateCurrentDieIndex()
@@ -243,7 +251,7 @@ namespace assignment2_LEJ.ViewModels
             {
                 CurrentDefectIndex--;
                 SelectedDefect = Defects[CurrentDefectIndex];
-                Messenger.Default.Send<int>(currentDefectIndex);
+                SharedData.Instance.DefectIndexData = currentDefectIndex;
             }
         }
 
@@ -253,7 +261,7 @@ namespace assignment2_LEJ.ViewModels
             {
                 CurrentDefectIndex++;
                 SelectedDefect = Defects[CurrentDefectIndex];
-                Messenger.Default.Send<int>(currentDefectIndex);
+                SharedData.Instance.DefectIndexData = currentDefectIndex;
             }
         }
         private void PreviousDie()

@@ -11,6 +11,7 @@ namespace assignment2_LEJ.Models
         public string FileName { get; set; }
         public string LastModifiedDate { get; set; }
         public string FilePath { get; set; }
+        public string FolderPath { get; set; }
     }
 
 }

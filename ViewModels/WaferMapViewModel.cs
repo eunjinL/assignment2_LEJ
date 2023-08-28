@@ -84,10 +84,18 @@ namespace assignment2_LEJ.ViewModels
         public WaferMapViewModel()
         {
             dieCoordinates = new ObservableCollection<Tuple<int, int>>();
-            Messenger.Default.Register<Wafer>(this, LoadWaferData);
+            LoadWaferData(SharedData.Instance.WaferData);
             UpdateDieCoordinates();
+            SharedData.Instance.PropertyChanged += SharedData_PropertyChanged;
         }
-
+        private void SharedData_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "WaferData")
+            {
+                LoadWaferData(SharedData.Instance.WaferData);
+                UpdateDieCoordinates();
+            }
+        }
         private void LoadWaferData(Wafer loadedWafer)
         {
             Wafer = loadedWafer;

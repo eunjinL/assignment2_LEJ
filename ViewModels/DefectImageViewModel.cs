@@ -88,24 +88,23 @@ namespace assignment2_LEJ.ViewModels
         }
         public DefectImageViewModel()
         {
-            Messenger.Default.Register<int>(this, LoadDefectId);
-            Messenger.Default.Register<string>(this, LoadFolderPath);
-            Messenger.Default.Register<bool>(this, LoadDefectShow);
+            SharedData.Instance.PropertyChanged += SharedData_PropertyChanged;
         }
-
-        private void LoadDefectId(int currentDefectIndex)
+        private void SharedData_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            ReceivedDefectID = currentDefectIndex;
+            if (e.PropertyName == "DefectIndexData")
+            {
+                ReceivedDefectID = SharedData.Instance.DefectIndexData;
+            }
+            else if (e.PropertyName == "DefectShowData")
+            {
+                ReceivedDefectShow = SharedData.Instance.DefectShowData;
+            }
+            else if (e.PropertyName == "FolderPath")
+            {
+                ReceivedFolderPath = SharedData.Instance.FolderPath;
+            }
         }
-        private void LoadFolderPath(string folderPath)
-        {
-            ReceivedFolderPath = folderPath;
-        }
-        private void LoadDefectShow(bool defectShow)
-        {
-            receivedDefectShow = defectShow;
-        }
-
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
         {
