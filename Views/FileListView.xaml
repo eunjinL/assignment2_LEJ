@@ -13,6 +13,7 @@
     <UserControl.Resources>
         <Style x:Key="num_btn_style" TargetType="Button">
             <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="Medium"/>
             <Setter Property="Background" Value="White"/>
             <Setter Property="Foreground" Value="Black"/>
             <Setter Property="Margin" Value="10"/>
@@ -54,14 +55,43 @@
                 Style="{StaticResource num_btn_style}"
                 Command="{Binding OpenCommand}"
                 CommandParameter="0"/>
+        <Button x:Name="SaveButton"
+                Grid.Column="1"
+                Grid.Row="0"
+                Content="Save All Images"
+                Grid.ColumnSpan="1"
+                Style="{StaticResource num_btn_style}"
+                Command="{Binding OpenCommand}"
+                CommandParameter="0"/>
+        <Button x:Name="RefreshButton"
+                Grid.Column="2"
+                Grid.Row="0"
+                Content="Refresh"
+                Style="{StaticResource num_btn_style}"
+                Command="{Binding OpenCommand}"
+                CommandParameter="0"/>
         
         <ListView ItemsSource="{Binding FileList}" 
                   SelectedItem="{Binding SelectedFileItem}"
                   Grid.Row="1" 
                   Grid.Column="2"
-                  Grid.ColumnSpan="4">
+                  Grid.ColumnSpan="2"
+                  BorderBrush="#D3D3D3"
+                  BorderThickness="1">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="FontSize" Value="15"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.Resources>
+                <Style x:Key="MyHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
+                    <Setter Property="FontSize" Value="15"/>
+                    <Setter Property="FontWeight" Value="Medium"/>
+                </Style>
+            </ListView.Resources>
             <ListView.View>
-                <GridView>
+                <GridView ColumnHeaderContainerStyle="{StaticResource MyHeaderStyle}">
                     <GridViewColumn Header="Name" 
                                     DisplayMemberBinding="{Binding FileName}"
                                     Width="200" />

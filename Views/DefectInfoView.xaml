@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:assignment2_LEJ.Views"
         xmlns:viewModels="clr-namespace:assignment2_LEJ.ViewModels"
         mc:Ignorable="d"
-        Background="White" Width="800" Height="500">
+        Background="White" >
     <UserControl.DataContext>
         <viewModels:DefectInfoViewModel />
     </UserControl.DataContext>
@@ -25,22 +25,28 @@
                     Grid.Row="0" 
                     Grid.Column="0"
                     Grid.RowSpan="3">
-            <TextBlock Text="Sample Information" FontWeight="Bold" Margin="0,0,0,10"/>
-            <TextBlock TextWrapping="Wrap">
+            <TextBlock Text="Sample Information" 
+                       FontWeight="Bold" 
+                       Margin="0,0,0,25"
+                       FontSize="15"/>
+            <TextBlock TextWrapping="Wrap"
+                       FontSize="15">
                 <TextBlock.Text>
                     <MultiBinding StringFormat="{}FileTimestamp: {0}">
                         <Binding Path="Wafer.FileTimestamp" />
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>
-            <TextBlock TextWrapping="Wrap">
+            <TextBlock TextWrapping="Wrap"
+                       FontSize="15">
                 <TextBlock.Text>
                     <MultiBinding StringFormat="{}WaferID: {0}">
                         <Binding Path="Wafer.WaferID" />
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>
-            <TextBlock TextWrapping="Wrap">
+            <TextBlock TextWrapping="Wrap"
+                       FontSize="15">
                 <TextBlock.Text>
                     <MultiBinding StringFormat="{}LotID: {0}">
                         <Binding Path="Wafer.LotID" />
@@ -53,11 +59,12 @@
             Grid.Row="0" 
             Grid.Column="1" 
             HorizontalAlignment="Stretch" 
-            VerticalAlignment="Stretch">
+            VerticalAlignment="Stretch"
+            Margin="0,0,30,0">
             <Button 
                 Command="{Binding PreviousDieCommand}" 
                 DockPanel.Dock="Left"
-                Margin="0,0,0,0"
+                Margin="0"
                 Background="Transparent"
                 BorderBrush="Transparent">
                 <Image Source="../Images/ic_1arrowLeft.png" Width="50" Height="50" />
@@ -65,7 +72,7 @@
             <Button 
                 Command="{Binding NextDieCommand}" 
                 DockPanel.Dock="Right"
-                Margin="30,0,10,0"
+                Margin="0"
                 Background="Transparent"
                 BorderBrush="Transparent">
                 <Image Source="../Images/ic_1arrowRight.png" Width="50" Height="50" />
@@ -73,18 +80,21 @@
             <TextBlock 
                 Text="{Binding DieDisplayText}" 
                 VerticalAlignment="Center"
-                HorizontalAlignment="Center" />
+                HorizontalAlignment="Center"
+                FontSize="24" 
+                FontWeight="Bold"  />
         </DockPanel>
         <!-- die 내에 있는 defect 순서 넘기기 -->
         <DockPanel 
             Grid.Row="1" 
             Grid.Column="1" 
             HorizontalAlignment="Stretch" 
-            VerticalAlignment="Stretch">
+            VerticalAlignment="Stretch"
+            Margin="0,0,30,0">
             <Button 
                 Command="{Binding PreviousDieDefectCommand}" 
                 DockPanel.Dock="Left"
-                Margin="0,0,0,0"
+                Margin="0"
                 Background="Transparent"
                 BorderBrush="Transparent">
                 <Image Source="../Images/ic_2arrowLeft.png" Width="45" Height="45" />
@@ -92,7 +102,7 @@
             <Button 
                 Command="{Binding NextDieDefectCommand}" 
                 DockPanel.Dock="Right"
-                Margin="30,0,10,0"
+                Margin="0"
                 Background="Transparent"
                 BorderBrush="Transparent">
                 <Image Source="../Images/ic_2arrowRight.png" Width="45" Height="45" />
@@ -100,18 +110,21 @@
             <TextBlock 
                 Text="{Binding DieDefectDisplayText}" 
                 VerticalAlignment="Center"
-                HorizontalAlignment="Center" />
+                HorizontalAlignment="Center"
+                FontSize="24" 
+                FontWeight="Bold" />
         </DockPanel>
         <!-- 전체 defect 순서 넘기기 -->
         <DockPanel 
             Grid.Row="2" 
             Grid.Column="1" 
             HorizontalAlignment="Stretch" 
-            VerticalAlignment="Stretch">
+            VerticalAlignment="Stretch"
+            Margin="0,0,30,0">
             <Button 
                 Command="{Binding PreviousDefectCommand}" 
                 DockPanel.Dock="Left"
-                Margin="0,0,0,0"
+                Margin="0"
                 Background="Transparent"
                 BorderBrush="Transparent">
                 <Image Source="../Images/ic_3arrowLeft.png" Width="50" Height="50" />
@@ -119,7 +132,7 @@
             <Button 
                 Command="{Binding NextDefectCommand}" 
                 DockPanel.Dock="Right"
-                Margin="30,0,10,0"
+                Margin="0"
                 Background="Transparent"
                 BorderBrush="Transparent">
                 <Image Source="../Images/ic_3arrowRight.png" Width="50" Height="50" />
@@ -127,7 +140,9 @@
             <TextBlock 
                 Text="{Binding DefectDisplayText}" 
                 VerticalAlignment="Center"
-                HorizontalAlignment="Center" />
+                HorizontalAlignment="Center"
+                FontSize="24" 
+                FontWeight="SemiBold" />
         </DockPanel>
 
         <!-- defect list view -->
@@ -135,9 +150,23 @@
                   SelectedItem="{Binding SelectedDefect}"
                   Grid.Column="0"
                   Grid.Row="3"
-                  Grid.ColumnSpan="2">
+                  Grid.ColumnSpan="2"
+                  BorderBrush="#D3D3D3"
+                  BorderThickness="1">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="FontSize" Value="15"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.Resources>
+                <Style x:Key="MyHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
+                    <Setter Property="FontSize" Value="15"/>
+                    <Setter Property="FontWeight" Value="Medium"/>
+                </Style>
+            </ListView.Resources>
             <ListView.View>
-                <GridView>
+                <GridView ColumnHeaderContainerStyle="{StaticResource MyHeaderStyle}">
                     <GridViewColumn Header="DEFECTID" 
                                     DisplayMemberBinding="{Binding DefectID}"
                                     Width="100" />
