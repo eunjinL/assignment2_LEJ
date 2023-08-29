@@ -1,5 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -7,6 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
@@ -21,10 +22,36 @@ namespace assignment2_LEJ.ViewModels
         private TiffBitmapDecoder tiffDecoder;
         private bool receivedDefectShow = false;
         public event PropertyChangedEventHandler PropertyChanged;
+        private double scale = 1;
+        private Point startPoint;
+        private bool isDragging;
         #endregion
 
         #region[속성]
-        public ICommand MouseWheelCommand { get; }
+        public ICommand ZoomInCommand => new RelayCommand(ZoomIn);
+        public ICommand ZoomOutCommand => new RelayCommand(ZoomOut);
+        public double Scale
+        {
+            get { return scale; }
+            set
+            {
+                if (scale != value)
+                {
+                    scale = value;
+                    Application.Current.Dispatcher.Invoke(() => OnPropertyChanged("Scale"));
+                }
+            }
+        }
+        private void ZoomIn()
+        {
+            Scale *= 1.1; 
+        }
+
+        private void ZoomOut()
+        {
+            Scale /= 1.1; 
+        }
+
         /**
         * @brief 받은 폴더 경로 속성
         * @return 현재의 폴더 경로
@@ -149,6 +176,40 @@ namespace assignment2_LEJ.ViewModels
             {
                 ReceivedFolderPath = SharedData.Instance.FolderPath;
             }
+        }
+        private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            startPoint = e.GetPosition(sender as Image);
+            isDragging = true;
+        }
+
+        private void Image_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (!isDragging)
+                return;
+
+            Point endPoint = e.GetPosition(sender as Image);
+            double distance = CalculateDistance(startPoint, endPoint); // 거리 계산 메서드 호출
+            MessageBox.Show($"거리: {distance}px"); // 거리를 팝업으로 표시하거나 원하는 방식으로 처리
+
+            isDragging = false;
+        }
+
+        private void Image_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!isDragging)
+                return;
+
+            Point currentPoint = e.GetPosition(sender as Image);
+            // 현재 위치를 이용하여 화면에 동적으로 표시하거나 미리 설정된 측정 단위로 변환하여 보여줄 수 있음
+        }
+
+        private double CalculateDistance(Point startPoint, Point endPoint)
+        {
+            double distanceX = Math.Abs(endPoint.X - startPoint.X);
+            double distanceY = Math.Abs(endPoint.Y - startPoint.Y);
+            double distance = Math.Sqrt(distanceX * distanceX + distanceY * distanceY);
+            return distance;
         }
         /**
         * @brief 속성 변경 이벤트 발생 메서드

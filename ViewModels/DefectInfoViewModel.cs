@@ -250,6 +250,22 @@ namespace assignment2_LEJ.ViewModels
                 }
             }
         }
+        /*private void UpdateSelectedCoordinateFromSelectedDie()
+        {
+            if (SelectedDie != null)
+            {
+                SharedData.Instance.SelectedCoordinate = SelectedDie.Coordinate;
+            }
+        }
+
+        private void UpdateSelectedCoordinateFromSelectedDefect()
+        {
+            if (SelectedDie != null && currentDieDefectIndex >= 0 && currentDieDefectIndex < SelectedDie.Defects.Count)
+            {
+                Defect selectedDefect = SelectedDie.Defects[currentDieDefectIndex];
+                SharedData.Instance.SelectedCoordinate = new Tuple<int, int>(selectedDefect.XINDEX, selectedDefect.YINDEX);
+            }
+        }*/
         /**
         * @brief 현재 선택된 결함 인덱스를 업데이트합니다.
         * @param 없음
