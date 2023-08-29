@@ -46,7 +46,27 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
-
+        <!-- TreeView to display the hierarchical file structure -->
+        <TreeView Grid.Row="1" Grid.Column="0" 
+                  Grid.RowSpan="2" Grid.ColumnSpan="2"
+                  Margin="2"
+                  BorderBrush="#D3D3D3" BorderThickness="1">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding SubFiles}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{Binding Icon}" Width="16" Height="16" Margin="0,0,5,0"/>
+                        <TextBlock Text="{Binding FileName}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type TreeViewItem}">
+                    <Setter Property="FontSize" Value="15"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Style>
+            </TreeView.ItemContainerStyle>
+        </TreeView>
+        
         <Button x:Name="OpenButton"
                 Grid.Column="0"
                 Grid.Row="0"
@@ -77,7 +97,8 @@
                   Grid.Column="2"
                   Grid.ColumnSpan="2"
                   BorderBrush="#D3D3D3"
-                  BorderThickness="1">
+                  BorderThickness="1"
+                  Margin="2">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="FontSize" Value="15"/>

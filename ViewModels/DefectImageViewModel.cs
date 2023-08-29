@@ -30,6 +30,9 @@ namespace assignment2_LEJ.ViewModels
         #region[속성]
         public ICommand ZoomInCommand => new RelayCommand(ZoomIn);
         public ICommand ZoomOutCommand => new RelayCommand(ZoomOut);
+        public ICommand MouseLeftButtonDownCommand => new RelayCommand(MouseLeftButtonDown);
+        public ICommand MouseLeftButtonUpCommand => new RelayCommand(MouseLeftButtonUp);
+        public ICommand MouseMoveCommand => new RelayCommand(MouseMove);
         public double Scale
         {
             get { return scale; }
@@ -177,30 +180,30 @@ namespace assignment2_LEJ.ViewModels
                 ReceivedFolderPath = SharedData.Instance.FolderPath;
             }
         }
-        private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void MouseLeftButtonDown(object parameter)
         {
-            startPoint = e.GetPosition(sender as Image);
+            startPoint = (Point)parameter;
             isDragging = true;
         }
 
-        private void Image_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void MouseLeftButtonUp(object parameter)
         {
             if (!isDragging)
                 return;
 
-            Point endPoint = e.GetPosition(sender as Image);
-            double distance = CalculateDistance(startPoint, endPoint); // 거리 계산 메서드 호출
-            MessageBox.Show($"거리: {distance}px"); // 거리를 팝업으로 표시하거나 원하는 방식으로 처리
+            Point endPoint = (Point)parameter;
+            double distance = CalculateDistance(startPoint, endPoint);
+            MessageBox.Show($"거리: {distance}px");
 
             isDragging = false;
         }
 
-        private void Image_MouseMove(object sender, MouseEventArgs e)
+        private void MouseMove(object parameter)
         {
             if (!isDragging)
                 return;
 
-            Point currentPoint = e.GetPosition(sender as Image);
+            Point currentPoint = (Point)parameter;
             // 현재 위치를 이용하여 화면에 동적으로 표시하거나 미리 설정된 측정 단위로 변환하여 보여줄 수 있음
         }
 
