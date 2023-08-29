@@ -23,6 +23,7 @@ namespace assignment2_LEJ.ViewModels
         private int currentDieDefectIndex;
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
+
         #region[속성]
         public ICommand PreviousDefectCommand { get; }
         public ICommand NextDefectCommand { get; }
@@ -125,7 +126,7 @@ namespace assignment2_LEJ.ViewModels
                 {
                     return $"0/0";
                 }
-                return $"{CurrentDieIndex + 1}/{TotalDies}";
+                return $"{CurrentDieIndex + 1} / {TotalDies}";
             }
         }
         public string DefectDisplayText
@@ -136,7 +137,7 @@ namespace assignment2_LEJ.ViewModels
                 {
                     return $"0/0";
                 }
-                return $"{CurrentDefectIndex + 1}/{TotalDefects}";
+                return $"{CurrentDefectIndex + 1} / {TotalDefects}";
             }
         }
         public string DieDefectDisplayText
@@ -147,7 +148,7 @@ namespace assignment2_LEJ.ViewModels
                 {
                     return $"0/0";
                 }
-                return $"{CurrentDieDefectIndex + 1}/{TotalDieDefects}";
+                return $"{CurrentDieDefectIndex + 1} / {TotalDieDefects}";
             }
         }
 
@@ -160,9 +161,21 @@ namespace assignment2_LEJ.ViewModels
                 {
                     selectedDefect = value;
                     OnPropertyChanged(nameof(SelectedDefect));
-                    CurrentDieDefectIndex = 0;
+
                     UpdateCurrentDefectIndex();
                     UpdateCurrentDieDefectIndex();
+
+                    for (int i = 0; i < Wafer.Dies.Count; i++)
+                    {
+                        Die currentDie = Wafer.Dies[i];
+                        if (currentDie.Defects.Contains(selectedDefect))
+                        {
+                            SelectedDie = currentDie;
+                            CurrentDieIndex = i;
+                            CurrentDieDefectIndex = currentDie.Defects.IndexOf(selectedDefect);
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -180,6 +193,7 @@ namespace assignment2_LEJ.ViewModels
             }
         }
         #endregion
+
         #region[생성자]
         public DefectInfoViewModel()
         {
@@ -194,22 +208,46 @@ namespace assignment2_LEJ.ViewModels
             NextDieDefectCommand = new RelayCommand(NextDieDefect);
         }
         #endregion
+
         #region[public 메서드]
 
         #endregion
+
         #region[protected, private 메서드]
+
         /**
         * @brief SharedData의 속성 변경 이벤트 핸들러입니다.
         * @param sender 이벤트를 발생시킨 객체
         * @param e PropertyChangedEventArgs 객체
         * @return 없음
         * 2023-08-28|이은진|초안 작성
+        * 2023-08-29|이은진|SharedData와 좌표 주고 받기 기능 추가 
         */
         private void SharedData_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "WaferData")
             {
                 LoadWaferData(SharedData.Instance.WaferData);
+            }
+            if (e.PropertyName == "SelectedCoordinate")
+            {
+                Tuple<int, int> selectedCoordinate = SharedData.Instance.SelectedCoordinate;
+
+                for (int i = 0; i < Wafer.Dies.Count; i++)
+                {
+                    Die currentDie = Wafer.Dies[i];
+                    if (currentDie.Coordinate.Item1 == selectedCoordinate.Item1 && currentDie.Coordinate.Item2 == selectedCoordinate.Item2)
+                    {
+                        SelectedDie = currentDie;
+                        CurrentDieIndex = i;
+                        CurrentDieDefectIndex = 0; 
+                        UpdateCurrentDefectIndex();
+                        UpdateCurrentDieDefectIndex();
+                        OnPropertyChanged(nameof(DieDisplayText));
+                        OnPropertyChanged(nameof(DieDefectDisplayText));
+                        break;
+                    }
+                }
             }
         }
         /**
@@ -325,6 +363,7 @@ namespace assignment2_LEJ.ViewModels
             {
                 CurrentDieIndex--;
                 SelectedDie = Wafer.Dies[CurrentDieIndex];
+                SharedData.Instance.DefectIndexData = currentDefectIndex;
             }
         }
         /**
@@ -339,6 +378,7 @@ namespace assignment2_LEJ.ViewModels
             {
                 CurrentDieIndex++;
                 SelectedDie = Wafer.Dies[CurrentDieIndex];
+                SharedData.Instance.DefectIndexData = currentDefectIndex;
             }
         }
         /**
@@ -382,10 +422,6 @@ namespace assignment2_LEJ.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
-
-
-
-
     }
 
 

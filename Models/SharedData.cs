@@ -17,8 +17,27 @@ namespace assignment2_LEJ.ViewModels
         private bool defectShowData;
         private int defectIndexData;
         public event PropertyChangedEventHandler PropertyChanged;
+        private Tuple<int, int> selectedCoordinate;
         #endregion
         #region[속성]
+        /**
+         * @brief 선택된 die의 좌표값 저장
+         * @param value 새로운 die의 좌표값
+         * @return 없음
+         * 2023-08-29|이은진|선택된 die의 좌표값 저장
+         */
+        public Tuple<int, int> SelectedCoordinate
+        {
+            get => selectedCoordinate;
+            set
+            {
+                if (selectedCoordinate != value)
+                {
+                    selectedCoordinate = value;
+                    OnPropertyChanged("SelectedCoordinate");
+                }
+            }
+        }
         /**
          * @brief 데이터 폴더 경로를 가져오거나 설정
          * @param value 새로운 데이터 폴더 경로

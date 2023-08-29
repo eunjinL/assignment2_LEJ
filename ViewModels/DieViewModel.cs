@@ -30,6 +30,8 @@ namespace assignment2_LEJ.ViewModels
                         if (parentVM != null)
                         {
                             parentVM.SelectedDie = this;
+                            Tuple<int, int> selectedCoordinate = this.Die.Coordinate;
+                            SharedData.Instance.SelectedCoordinate = selectedCoordinate;
                         }
                     });
                 }
