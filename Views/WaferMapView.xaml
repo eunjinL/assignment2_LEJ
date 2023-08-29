@@ -7,18 +7,16 @@
         xmlns:viewModels="clr-namespace:assignment2_LEJ.ViewModels"
         xmlns:converters="clr-namespace:assignment2_LEJ.Converters"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         Background="Black">
     <UserControl.DataContext>
         <viewModels:WaferMapViewModel />
     </UserControl.DataContext>
     <Grid>
-        <b:Interaction.Triggers>
-            <b:EventTrigger EventName="SizeChanged">
-                <converters:BindableSizeBehavior Width="{Binding ScreenWidth, Mode=TwoWay}" Height="{Binding ScreenHeight, Mode=TwoWay}"/>
-            </b:EventTrigger>
-        </b:Interaction.Triggers>
+        <i:Interaction.Behaviors>
+            <converters:BindableSizeBehavior Width="{Binding ScreenWidth, Mode=TwoWay}" Height="{Binding ScreenHeight, Mode=TwoWay}"/>
+        </i:Interaction.Behaviors>
         <ItemsControl ItemsSource="{Binding DieViewModels}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>

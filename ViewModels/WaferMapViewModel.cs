@@ -1,4 +1,5 @@
 ﻿using assignment2_LEJ.Models;
+using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

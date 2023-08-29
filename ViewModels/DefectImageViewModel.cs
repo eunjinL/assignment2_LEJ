@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Messaging;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -6,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
 namespace assignment2_LEJ.ViewModels
@@ -20,10 +20,8 @@ namespace assignment2_LEJ.ViewModels
         private TiffBitmapDecoder tiffDecoder;
         private bool receivedDefectShow = false;
         public event PropertyChangedEventHandler PropertyChanged;
-        private double scale = 1;
         #endregion
         #region[속성]
-        public ICommand MouseWheelCommand { get; }
         /**
         * @brief 받은 폴더 경로 속성
         * @return 현재의 폴더 경로
@@ -39,18 +37,6 @@ namespace assignment2_LEJ.ViewModels
                     receivedFolderPath = value;
                     OnPropertyChanged(nameof(ReceivedFolderPath));
                     LoadTiffImage();
-                }
-            }
-        }
-        public double Scale
-        {
-            get { return scale; }
-            set
-            {
-                if (scale != value)
-                {
-                    scale = value;
-                    OnPropertyChanged("Scale");
                 }
             }
         }
@@ -134,27 +120,10 @@ namespace assignment2_LEJ.ViewModels
         public DefectImageViewModel()
         {
             SharedData.Instance.PropertyChanged += SharedData_PropertyChanged;
-            MouseWheelCommand = new RelayCommand(OnMouseWheel);
         }
         #endregion
 
         #region[protected, private 메서드]
-        /**
-        * @brief 데이터 변경 이벤트 핸들러
-        * @param sender 이벤트를 발생시킨 객체
-        * @param e PropertyChangedEventArgs 객체로, 변경된 속성 정보 포함
-        * @return 없음
-        * 2023-08-28|이은진|마우스 휠 확대 축소 기능
-        */
-        private void OnMouseWheel(object parameter)
-        {
-            var e = parameter as MouseWheelEventArgs;
-
-            if (e != null)
-            {
-                Scale += e.Delta > 0 ? 0.1 : -0.1;
-            }
-        }
         /**
         * @brief 데이터 변경 이벤트 핸들러
         * @param sender 이벤트를 발생시킨 객체

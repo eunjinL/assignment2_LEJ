@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using assignment2_LEJ.Models;
+using GalaSoft.MvvmLight.Messaging;
 using System.Windows.Input;
 
 namespace assignment2_LEJ.ViewModels
