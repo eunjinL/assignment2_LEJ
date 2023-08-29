@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
 namespace assignment2_LEJ.ViewModels
@@ -21,7 +22,9 @@ namespace assignment2_LEJ.ViewModels
         private bool receivedDefectShow = false;
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
+
         #region[속성]
+        public ICommand MouseWheelCommand { get; }
         /**
         * @brief 받은 폴더 경로 속성
         * @return 현재의 폴더 경로
@@ -116,6 +119,7 @@ namespace assignment2_LEJ.ViewModels
             }
         }
         #endregion
+
         #region[생성자]
         public DefectImageViewModel()
         {
@@ -157,9 +161,6 @@ namespace assignment2_LEJ.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
-
-        
-        
     }
 
 }

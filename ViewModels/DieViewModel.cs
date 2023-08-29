@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace assignment2_LEJ.ViewModels
 {
@@ -13,8 +14,43 @@ namespace assignment2_LEJ.ViewModels
         #region[필드]
         private Die die;
         public event PropertyChangedEventHandler PropertyChanged;
+        private bool isSelected;
         #endregion
         #region[속성]
+        private ICommand selectCommand;
+        public ICommand SelectCommand
+        {
+            get
+            {
+                if (selectCommand == null)
+                {
+                    selectCommand = new RelayCommand((param) =>
+                    {
+                        WaferMapViewModel parentVM = param as WaferMapViewModel;
+                        if (parentVM != null)
+                        {
+                            parentVM.SelectedDie = this;
+                        }
+                    });
+                }
+
+                return selectCommand;
+            }
+        }
+
+        public bool IsSelected
+        {
+            get => isSelected;
+            set
+            {
+                if (isSelected != value)
+                {
+                    isSelected = value;
+                    OnPropertyChanged(nameof(IsSelected));
+                }
+            }
+        }
+
         public Die Die
         {
             get => die;

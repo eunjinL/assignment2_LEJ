@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:assignment2_LEJ.Views"
         xmlns:viewModels="clr-namespace:assignment2_LEJ.ViewModels"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         Background="White">
     <UserControl.DataContext>
@@ -13,4 +14,5 @@
     <Grid>
         <Image Source="{Binding LoadedImage}" Stretch="Uniform" />
     </Grid>
+    
 </UserControl>

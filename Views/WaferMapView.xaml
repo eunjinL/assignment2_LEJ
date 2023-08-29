@@ -23,7 +23,6 @@
                     <Rectangle 
                         Width="{Binding Path=DataContext.CellWidth, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
                         Height="{Binding Path=DataContext.CellHeight, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
-                        Stroke="Black" 
                         Margin="1">
                         <Rectangle.ToolTip>
                             <ToolTip Content="{Binding Die.Coordinate, StringFormat='X: {0}, Y: {1}'}"/>
@@ -31,14 +30,25 @@
                         <Rectangle.Style>
                             <Style TargetType="Rectangle">
                                 <Setter Property="Fill" Value="Red"/>
+                                <Setter Property="Stroke" Value="Black"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Die.Defects.Count}" Value="0">
                                         <Setter Property="Fill" Value="LightGray"/>
+                                        <Setter Property="Stroke" Value="Black"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                        <Setter Property="Stroke" Value="Blue"/>
+                                        <Setter Property="StrokeThickness" Value="2"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Rectangle.Style>
-
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding SelectCommand}"
+                                                       CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                         <Rectangle.RenderTransform>
                             <TranslateTransform 
                                 X="{Binding Die.GridCoordinate.Item1}" 

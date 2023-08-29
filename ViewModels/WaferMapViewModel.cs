@@ -21,9 +21,29 @@ namespace assignment2_LEJ.ViewModels
         private double screenHeight;
         private ObservableCollection<Tuple<int, int>> dieCoordinates;
         public event PropertyChangedEventHandler PropertyChanged;
+        private DieViewModel selectedDie;
         #endregion
 
         #region[속성]
+        public DieViewModel SelectedDie
+        {
+            get => selectedDie;
+            set
+            {
+                if (selectedDie != value)
+                {
+                    if (selectedDie != null)
+                        selectedDie.IsSelected = false; 
+
+                    selectedDie = value;
+
+                    if (selectedDie != null)
+                        selectedDie.IsSelected = true;  
+
+                    OnPropertyChanged(nameof(SelectedDie));
+                }
+            }
+        }
         public ObservableCollection<DieViewModel> DieViewModels { get; set; } = new ObservableCollection<DieViewModel>();
         public double CellWidth
         {
@@ -100,7 +120,6 @@ namespace assignment2_LEJ.ViewModels
 
         #region[public 메서드]
         #endregion
-
         #region[protected, private 메서드]
         /**
          * @brief SharedData의 속성 변경 이벤트 핸들러입니다.
