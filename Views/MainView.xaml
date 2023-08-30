@@ -44,7 +44,8 @@
                        Foreground="White"
                        FontWeight="Bold"/>
         </Border>
-        <Border Style="{StaticResource ViewBorderStyle}" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2">
+        <Border Style="{StaticResource ViewBorderStyle}" 
+                Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2">
             <views:DefectImageView/>
         </Border>
 
