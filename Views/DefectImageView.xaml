@@ -12,24 +12,19 @@
         <viewModels:DefectImageViewModel />
     </UserControl.DataContext>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="20*"/>
-        </Grid.RowDefinitions>
-        <ScrollViewer Grid.Row="1">
+        <ScrollViewer >
             <Image Source="{Binding LoadedImage}" Stretch="Uniform"
-                   RenderTransformOrigin="0.5,0.5"> 
+                   RenderTransformOrigin="0.5,0.5">
                 <Image.RenderTransform>
                     <ScaleTransform ScaleX="{Binding Scale}" 
                             ScaleY="{Binding Scale}" />
                 </Image.RenderTransform>
             </Image>
         </ScrollViewer>
-        <ToolBarTray Grid.Row="0" DockPanel.Dock="Top">
-            <ToolBar>
-                <Button Command="{Binding ZoomInCommand}" Content="확대" />
-                <Button Command="{Binding ZoomOutCommand}" Content="축소" />
-            </ToolBar>
-        </ToolBarTray>
+        <Slider 
+            Height="120" Minimum="0.5" Maximum="2.0" 
+            Value="{Binding Scale, Mode=TwoWay}" 
+            VerticalAlignment="Center" HorizontalAlignment="Right" 
+            Margin="20,0" Orientation="Vertical"/>
     </Grid>
 </UserControl>

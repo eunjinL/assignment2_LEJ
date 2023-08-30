@@ -47,12 +47,12 @@ namespace assignment2_LEJ.ViewModels
         }
         private void ZoomIn()
         {
-            Scale *= 1.1; 
+            Scale *= 1.02; 
         }
 
         private void ZoomOut()
         {
-            Scale /= 1.1; 
+            Scale /= 1.02; 
         }
 
         /**
