@@ -191,7 +191,7 @@ namespace assignment2_LEJ.ViewModels
             if (Wafer == null) return;
 
             CellWidth = (ScreenWidth - 25) / (Wafer.GridWidth + 1);
-            CellHeight = (ScreenHeight - 35) / (Wafer.GridHeight + 1);
+            CellHeight = (ScreenHeight - 50) / (Wafer.GridHeight + 1);
         }
         /**
          * @brief 속성 변경 이벤트를 호출하여 UI를 업데이트합니다.

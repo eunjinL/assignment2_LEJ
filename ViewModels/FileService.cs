@@ -119,7 +119,7 @@ namespace assignment2_LEJ.ViewModels
         public Wafer LoadFromFile(string filePath)
         {
             Wafer wafer = new Wafer();
-            wafer.Dies = new List<Die>(); 
+            wafer.Dies = new List<Die>();
 
             using (StreamReader sr = new StreamReader(filePath))
             {
