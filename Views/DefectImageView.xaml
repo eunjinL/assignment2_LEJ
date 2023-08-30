@@ -22,9 +22,9 @@
             </Image>
         </ScrollViewer>
         <Slider 
-            Height="120" Minimum="0.5" Maximum="2.0" 
+            Width="120" Minimum="0.5" Maximum="2.0" 
             Value="{Binding Scale, Mode=TwoWay}" 
-            VerticalAlignment="Center" HorizontalAlignment="Right" 
-            Margin="20,0" Orientation="Vertical"/>
+            VerticalAlignment="Bottom" HorizontalAlignment="Center" 
+            Margin="20,10" />
     </Grid>
 </UserControl>

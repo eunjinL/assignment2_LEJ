@@ -33,7 +33,7 @@
                                 <Setter Property="Stroke" Value="Black"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Die.Defects.Count}" Value="0">
-                                        <Setter Property="Fill" Value="LightGray"/>
+                                        <Setter Property="Fill" Value="#D3D3D3"/>
                                         <Setter Property="Stroke" Value="Black"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding IsSelected}" Value="True">
