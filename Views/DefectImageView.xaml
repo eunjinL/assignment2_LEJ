@@ -14,9 +14,9 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="20*"/>
         </Grid.RowDefinitions>
-        <ScrollViewer Grid.Row="0">
+        <ScrollViewer Grid.Row="1">
             <Image Source="{Binding LoadedImage}" Stretch="Uniform"
                    RenderTransformOrigin="0.5,0.5"> 
                 <Image.RenderTransform>
@@ -25,7 +25,7 @@
                 </Image.RenderTransform>
             </Image>
         </ScrollViewer>
-        <ToolBarTray Grid.Row="1" DockPanel.Dock="Top">
+        <ToolBarTray Grid.Row="0" DockPanel.Dock="Top">
             <ToolBar>
                 <Button Command="{Binding ZoomInCommand}" Content="확대" />
                 <Button Command="{Binding ZoomOutCommand}" Content="축소" />

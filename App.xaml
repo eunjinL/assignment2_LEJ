@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:assignment2_LEJ"
              StartupUri="Views/MainView.xaml">
     <Application.Resources>
-         
+        <BitmapImage x:Key="AppIcon" UriSource="Images/logo_ATI.png" />
     </Application.Resources>
 </Application>

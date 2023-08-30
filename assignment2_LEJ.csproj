@@ -195,5 +195,8 @@
     <Resource Include="Images\ic_2arrowLeft.png" />
     <Resource Include="Images\ic_2arrowRight.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\logo_ATI.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

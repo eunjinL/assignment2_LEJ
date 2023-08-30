@@ -7,7 +7,15 @@
         xmlns:viewModels="clr-namespace:assignment2_LEJ.ViewModels"
         xmlns:views="clr-namespace:assignment2_LEJ.Views"
         mc:Ignorable="d"
-        Title="MainView" Height="1000" Width="1600">
+        Title="Vine - Klarf Format" Height="1000" Width="1600"
+        Icon="{StaticResource AppIcon}">
+    <Window.Resources>
+        <Style x:Key="ViewBorderStyle" TargetType="Border">
+            <Setter Property="BorderBrush" Value="#D3D3D3"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="10"/>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -17,29 +25,47 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Border Background="LightGray" Grid.Row="0" Grid.Column="0" Padding="5">
-            <TextBlock Text="Wafer Map Viewer"/>
+        <Border Background="#007ACC" Grid.Row="0" Grid.Column="0" Padding="5" CornerRadius="35,5,0,0">
+            <TextBlock Text="     Wafer Map Viewer "
+                       Foreground="White"
+                       FontWeight="Bold"/>
         </Border>
-        <views:WaferMapView Grid.Row="1" Grid.Column="0"/>
+        <Border Style="{StaticResource ViewBorderStyle}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+            <views:WaferMapView/>
+        </Border>
 
-        <Border Background="LightGray" Grid.Row="0" Grid.Column="1" Padding="5">
-            <TextBlock Text="Defect Image Viewer"/>
+        <Border Background="#007ACC" Grid.Row="0" Grid.Column="2" Padding="5" CornerRadius="35,5,0,0">
+            <TextBlock Text="     Defect Image Viewer "
+                       Foreground="White"
+                       FontWeight="Bold"/>
         </Border>
-        <views:DefectImageView Grid.Row="1" Grid.Column="1"/>
+        <Border Style="{StaticResource ViewBorderStyle}" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2">
+            <views:DefectImageView/>
+        </Border>
 
-        <Border Background="LightGray" Grid.Row="2" Grid.Column="0" Padding="5">
-            <TextBlock Text="File List Viewer"/>
+        <Border Background="#007ACC" Grid.Row="2" Grid.Column="0" Padding="5" CornerRadius="35,5,0,0">
+            <TextBlock Text="        File List Viewer "
+                       Foreground="White"
+                       FontWeight="Bold"/>
         </Border>
-        <views:FileListView Grid.Row="3" Grid.Column="0"/>
+        <Border Style="{StaticResource ViewBorderStyle}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
+            <views:FileListView/>
+        </Border>
 
-        <Border Background="LightGray" Grid.Row="2" Grid.Column="1" Padding="5">
-            <TextBlock Text="Defect Info Viewer"/>
+        <Border Background="#007ACC" Grid.Row="2" Grid.Column="2" Padding="5" CornerRadius="35,5,0,0">
+            <TextBlock Text="       Defect Info Viewer "
+                       Foreground="White"
+                       FontWeight="Bold"/>
         </Border>
-        <views:DefectInfoView Grid.Row="3" Grid.Column="1"/>
+        <Border Style="{StaticResource ViewBorderStyle}" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2">
+            <views:DefectInfoView/>
+        </Border>
     </Grid>
 
 </Window>

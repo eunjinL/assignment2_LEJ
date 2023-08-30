@@ -18,8 +18,7 @@ namespace assignment2_LEJ.ViewModels
     public class FileService : INotifyPropertyChanged
     {
         #region[필드]
-        public ICommand OpenCommand { get; private set; }
-        public ObservableCollection<FileItem> FileList { get; private set; }
+        private Node rootNode;
         private FileItem selectedFileItem;
         private static FileService instance;
         private string folderPath;
@@ -29,6 +28,17 @@ namespace assignment2_LEJ.ViewModels
         #endregion
 
         #region[속성]
+        public ICommand OpenCommand { get; private set; }
+        public ObservableCollection<FileItem> FileList { get; private set; }
+        public Node RootNode
+        {
+            get { return rootNode; }
+            set
+            {
+                rootNode = value;
+                OnPropertyChanged("RootNode");
+            }
+        }
         /**
          * @brief 현재 로드된 웨이퍼를 가져오거나 설정
          * @param value 새로운 로드된 웨이퍼
@@ -76,46 +86,12 @@ namespace assignment2_LEJ.ViewModels
         public FileService()
         {
             OpenCommand = new RelayCommand(OpenFolder);
-            FileList = new ObservableCollection<FileItem>();
+            FileList = new ObservableCollection<FileItem>(); 
+            RootNode = LoadDirectory(@"C:\Users\ejlee\Desktop\eunjin"); // 대상 경로 설정
         }
         #endregion
 
         #region[public 메서드]
-        private void OpenFolder(object parameter)
-        {
-            FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
-
-            if (folderBrowser.ShowDialog() == DialogResult.OK)
-            {
-                folderPath = folderBrowser.SelectedPath;
-                LoadFiles(folderPath);
-                SharedData.Instance.FolderPath = folderPath;
-            }
-        }
-        private void LoadSelectedFile(string filePath)
-        {
-            if (!string.IsNullOrWhiteSpace(filePath))
-            {
-                LoadFromFile(filePath);
-            }
-        }
-        private void LoadFiles(string folderPath)
-        {
-            var files = Directory.GetFiles(folderPath, "*.001");
-
-            FileList.Clear();
-            foreach (var file in files)
-            {
-                var fileInfo = new FileInfo(file);
-                var fileItem = new FileItem
-                {
-                    FileName = fileInfo.Name,
-                    LastModifiedDate = fileInfo.LastWriteTime.ToShortDateString(),
-                    FilePath = fileInfo.FullName
-                };
-                FileList.Add(fileItem);
-            }
-        }
         public Wafer LoadFromFile(string filePath)
         {
             Wafer wafer = new Wafer();
@@ -335,9 +311,81 @@ namespace assignment2_LEJ.ViewModels
         #endregion
 
         #region[protected, private 메서드]
+        private static Node LoadDirectory(string dir)
+        {
+            var node = new Node { Name = Path.GetFileName(dir) };
+
+            try
+            {
+                foreach (var directory in Directory.GetDirectories(dir))
+                {
+                    node.Children.Add(LoadDirectory(directory));
+                }
+
+                foreach (var file in Directory.GetFiles(dir, "*.001"))
+                {
+                    node.Children.Add(new Node { Name = Path.GetFileName(file) });
+                }
+            }
+            catch (UnauthorizedAccessException)
+            {
+                Console.WriteLine("error");
+            }
+
+            return node;
+        }
+        private void OpenFolder(object parameter)
+        {
+            FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
+
+            if (folderBrowser.ShowDialog() == DialogResult.OK)
+            {
+                folderPath = folderBrowser.SelectedPath;
+                LoadFiles(folderPath);
+                SharedData.Instance.FolderPath = folderPath;
+            }
+        }
+        private void LoadSelectedFile(string filePath)
+        {
+            if (!string.IsNullOrWhiteSpace(filePath))
+            {
+                LoadFromFile(filePath);
+            }
+        }
+        private void LoadFiles(string folderPath)
+        {
+            var files = Directory.GetFiles(folderPath, "*.001");
+
+            FileList.Clear();
+            foreach (var file in files)
+            {
+                var fileInfo = new FileInfo(file);
+                var fileItem = new FileItem
+                {
+                    FileName = fileInfo.Name,
+                    LastModifiedDate = fileInfo.LastWriteTime.ToShortDateString(),
+                    FilePath = fileInfo.FullName
+                };
+                FileList.Add(fileItem);
+            }
+        }
+
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
+
+        #region
+        public class Node
+        {
+            public string Name { get; set; }
+            public ObservableCollection<Node> Children { get; set; }
+
+            public Node()
+            {
+                Children = new ObservableCollection<Node>();
+            }
         }
         #endregion
     }
