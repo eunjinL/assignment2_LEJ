@@ -12,29 +12,42 @@
         <viewModels:DefectImageViewModel />
     </UserControl.DataContext>
     <Grid>
-        <Image Source="{Binding LoadedImage}" Stretch="Uniform"
+        <Border HorizontalAlignment="Stretch" VerticalAlignment="Center" ClipToBounds="True">
+            <Image Source="{Binding LoadedImage}" Stretch="Uniform"
                    RenderTransformOrigin="0.5,0.5">
-            <Image.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform ScaleX="{Binding Scale}" 
-                                        ScaleY="{Binding Scale}" />
-                    <TranslateTransform X="{Binding TranslateX}" 
-                                            Y="{Binding TranslateY}" />
-                </TransformGroup>
-            </Image.RenderTransform>
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseLeftButtonDown">
-                    <i:InvokeCommandAction Command="{Binding StartMoveCommand}" />
-                </i:EventTrigger>
-                <i:EventTrigger EventName="MouseLeftButtonUp">
-                    <i:InvokeCommandAction Command="{Binding StopMoveCommand}" />
-                </i:EventTrigger>
-                <i:EventTrigger EventName="MouseMove">
-                    <i:InvokeCommandAction Command="{Binding MoveCommand}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </Image>
-        <Slider 
+                <Image.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="{Binding Scale}" 
+                                            ScaleY="{Binding Scale}" />
+                        <TranslateTransform X="{Binding TranslateX}" 
+                                                Y="{Binding TranslateY}"/>
+                    </TransformGroup>
+                </Image.RenderTransform>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseLeftButtonDown">
+                        <i:InvokeCommandAction Command="{Binding MouseLeftButtonDownCommand}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseLeftButtonUp">
+                        <i:InvokeCommandAction Command="{Binding MouseLeftButtonUpCommand}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseMove">
+                        <i:InvokeCommandAction Command="{Binding MouseMoveCommand}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseRightButtonDown">
+                        <i:InvokeCommandAction Command="{Binding StartDrawingCommand}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseRightButtonUp">
+                        <i:InvokeCommandAction Command="{Binding FinishDrawingCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Image>
+        </Border>
+        <TextBlock  
+            Grid.Row="0"
+            Text="{Binding LineLengthText}" 
+            HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5,0,5"
+            Foreground="red" Panel.ZIndex="1"/>
+        <Slider
             Width="120" Minimum="0.5" Maximum="2.0" 
             Value="{Binding Scale, Mode=TwoWay}" 
             VerticalAlignment="Bottom" HorizontalAlignment="Center" 

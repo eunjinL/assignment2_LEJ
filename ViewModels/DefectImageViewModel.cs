@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -9,7 +10,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace assignment2_LEJ.ViewModels
 {
@@ -23,8 +26,15 @@ namespace assignment2_LEJ.ViewModels
         private bool receivedDefectShow = false;
         public event PropertyChangedEventHandler PropertyChanged;
         private double scale = 1;
-        private Point startPoint;
-        private bool isDragging;
+        private Point imageStartPoint;
+        private Point lineStartPoint;
+        private Point lineEndPoint;
+        private bool isDrawing = false;
+        private bool isDragging = false;
+        private double translateX = 0.0;
+        private double translateY = 0.0;
+        private string lineLengthText;
+        private ObservableCollection<Line> drawnLines = new ObservableCollection<Line>();
         #endregion
 
         #region[속성]
@@ -32,7 +42,9 @@ namespace assignment2_LEJ.ViewModels
         public ICommand ZoomOutCommand => new RelayCommand(ZoomOut);
         public ICommand MouseLeftButtonDownCommand => new RelayCommand(MouseLeftButtonDown);
         public ICommand MouseLeftButtonUpCommand => new RelayCommand(MouseLeftButtonUp);
-        public ICommand MouseMoveCommand => new RelayCommand(MouseMove);
+        public ICommand MouseMoveCommand => new RelayCommand(MouseButtonMove);
+        public ICommand StartDrawingCommand => new RelayCommand(StartDrawing);
+        public ICommand FinishDrawingCommand => new RelayCommand(FinishDrawing);
         public double Scale
         {
             get { return scale; }
@@ -43,6 +55,72 @@ namespace assignment2_LEJ.ViewModels
                     scale = value;
                     Application.Current.Dispatcher.Invoke(() => OnPropertyChanged("Scale"));
                 }
+            }
+        }
+        public string LineLengthText
+        {
+            get { return lineLengthText; }
+            set
+            {
+                lineLengthText = value;
+                OnPropertyChanged(nameof(LineLengthText));
+            }
+        }
+        public ObservableCollection<Line> DrawnLines
+        {
+            get { return drawnLines; }
+            set
+            {
+                drawnLines = value;
+                OnPropertyChanged(nameof(DrawnLines));
+            }
+        }
+        public Point StartPoint
+        {
+            get { return lineStartPoint; }
+            set
+            {
+                lineStartPoint = value;
+                OnPropertyChanged(nameof(StartPoint));
+            }
+        }
+
+        public Point EndPoint
+        {
+            get { return lineEndPoint; }
+            set
+            {
+                lineEndPoint = value;
+                OnPropertyChanged(nameof(EndPoint));
+            }
+        }
+
+        public bool IsDrawing
+        {
+            get { return isDrawing; }
+            set
+            {
+                isDrawing = value;
+                OnPropertyChanged(nameof(IsDrawing));
+            }
+        }
+        public double TranslateX
+        {
+            get { return translateX; }
+            set
+            {
+                translateX = value;
+                Application.Current.Dispatcher.Invoke(() => OnPropertyChanged("TranslateX"));
+                // OnPropertyChanged("TranslateX");
+            }
+        }
+        public double TranslateY
+        {
+            get { return translateY; }
+            set
+            {
+                translateY = value;
+                OnPropertyChanged("TranslateY");
             }
         }
         private void ZoomIn()
@@ -180,39 +258,71 @@ namespace assignment2_LEJ.ViewModels
                 ReceivedFolderPath = SharedData.Instance.FolderPath;
             }
         }
-        private void MouseLeftButtonDown(object parameter)
+        private void StartDrawing()
         {
-            startPoint = (Point)parameter;
+            DrawnLines.Clear();
+            IsDrawing = true;
+            StartPoint = Mouse.GetPosition(null);
+            EndPoint = StartPoint;
+        }
+        private void FinishDrawing()
+        {
+            IsDrawing = false;
+            EndPoint = Mouse.GetPosition(null);
+
+            // 여기서 DrawnLines에 선 정보를 추가하도록 처리
+            DrawnLines.Add(CreateLine(StartPoint, EndPoint));
+            CalculateLineLength(StartPoint, EndPoint);
+        }
+        private void MouseLeftButtonDown()
+        {
+            Mouse.OverrideCursor = Cursors.ScrollAll;
             isDragging = true;
+            imageStartPoint = Mouse.GetPosition(null);
         }
 
-        private void MouseLeftButtonUp(object parameter)
+        private void MouseLeftButtonUp()
         {
-            if (!isDragging)
-                return;
-
-            Point endPoint = (Point)parameter;
-            double distance = CalculateDistance(startPoint, endPoint);
-            MessageBox.Show($"거리: {distance}px");
-
+            Mouse.OverrideCursor = Cursors.Arrow;
             isDragging = false;
         }
 
-        private void MouseMove(object parameter)
+        private void MouseButtonMove()
         {
-            if (!isDragging)
-                return;
+            if (isDragging)
+            {
+                Point newPoint = Mouse.GetPosition(null);
+                double deltaX = newPoint.X - imageStartPoint.X;
+                double deltaY = newPoint.Y - imageStartPoint.Y;
 
-            Point currentPoint = (Point)parameter;
-            // 현재 위치를 이용하여 화면에 동적으로 표시하거나 미리 설정된 측정 단위로 변환하여 보여줄 수 있음
+                TranslateX += deltaX;
+                TranslateY += deltaY;
+
+                imageStartPoint = newPoint;
+            }
+            else if (IsDrawing)
+            {
+                EndPoint = Mouse.GetPosition(null);
+            }
         }
-
-        private double CalculateDistance(Point startPoint, Point endPoint)
+        private Line CreateLine(Point startPoint, Point endPoint)
         {
-            double distanceX = Math.Abs(endPoint.X - startPoint.X);
-            double distanceY = Math.Abs(endPoint.Y - startPoint.Y);
-            double distance = Math.Sqrt(distanceX * distanceX + distanceY * distanceY);
-            return distance;
+            return new Line
+            {
+                X1 = startPoint.X,
+                Y1 = startPoint.Y,
+                X2 = endPoint.X,
+                Y2 = endPoint.Y,
+                Stroke = Brushes.Red,
+                StrokeThickness = 2
+            };
+        }
+        private void CalculateLineLength(Point startPoint, Point endPoint)
+        {
+            double lengthInPixels = Math.Sqrt(Math.Pow(endPoint.X - startPoint.X, 2) + Math.Pow(endPoint.Y - startPoint.Y, 2));
+            double lengthInMicrometers = lengthInPixels * 0.74;
+
+            LineLengthText = $"{lengthInMicrometers:F2} µm";
         }
         /**
         * @brief 속성 변경 이벤트 발생 메서드
