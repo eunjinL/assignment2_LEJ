@@ -47,6 +47,22 @@
             Text="{Binding LineLengthText}" 
             HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5,0,5"
             Foreground="red" Panel.ZIndex="1"/>
+        <ItemsControl Grid.Row="0" ItemsSource="{Binding DrawnLines}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Line 
+                        X1="{Binding X1}" Y1="{Binding Y1}" 
+                        X2="{Binding X2}" Y2="{Binding Y2}"
+                        Stroke="{Binding Stroke}" 
+                        StrokeThickness="{Binding StrokeThickness}"/>
+                    <!--<Line 
+                        X1="1142" Y1="239" 
+                        X2="1142" Y2="291"
+                        Stroke="Red" 
+                        StrokeThickness="3"/>-->
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
         <Slider
             Width="120" Minimum="0.5" Maximum="2.0" 
             Value="{Binding Scale, Mode=TwoWay}" 

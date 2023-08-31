@@ -53,6 +53,7 @@ namespace assignment2_LEJ.ViewModels
                 if (scale != value)
                 {
                     scale = value;
+                    CalculateLineLength(StartPoint, EndPoint);
                     Application.Current.Dispatcher.Invoke(() => OnPropertyChanged("Scale"));
                 }
             }
@@ -319,10 +320,10 @@ namespace assignment2_LEJ.ViewModels
         }
         private void CalculateLineLength(Point startPoint, Point endPoint)
         {
-            double lengthInPixels = Math.Sqrt(Math.Pow(endPoint.X - startPoint.X, 2) + Math.Pow(endPoint.Y - startPoint.Y, 2));
-            double lengthInMicrometers = lengthInPixels * 0.74;
+            double scaledLengthInPixels = Math.Sqrt(Math.Pow(endPoint.X - startPoint.X, 2) + Math.Pow(endPoint.Y - startPoint.Y, 2));
+            double scaledLengthInMicrometers = scaledLengthInPixels * (0.266 / Scale); // 스케일에 맞춰서 조정
 
-            LineLengthText = $"{lengthInMicrometers:F2} µm";
+            LineLengthText = $"{scaledLengthInMicrometers:F2} µm";
         }
         /**
         * @brief 속성 변경 이벤트 발생 메서드
