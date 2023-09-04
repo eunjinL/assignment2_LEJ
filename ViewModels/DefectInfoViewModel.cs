@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace assignment2_LEJ.ViewModels
 {
-    public class DefectInfoViewModel : INotifyPropertyChanged
+    public class DefectInfoViewModel : NotifierBase
     {
         #region[필드]
         private ObservableCollection<Defect> defects;
@@ -21,7 +21,6 @@ namespace assignment2_LEJ.ViewModels
         private int currentDefectIndex;
         private int currentDieIndex;
         private int currentDieDefectIndex;
-        public event PropertyChangedEventHandler PropertyChanged;
         #endregion
 
         #region[속성]
@@ -426,16 +425,6 @@ namespace assignment2_LEJ.ViewModels
                 SelectedDefect = SelectedDie.Defects[CurrentDieDefectIndex];
                 UpdateCurrentDieDefectIndex();
             }
-        }
-        /**
-        * @brief 속성 변경 이벤트를 호출합니다.
-        * @param propertyName 변경된 속성의 이름
-        * @return 없음
-        * 2023-08-28|이은진|초안 작성
-        */
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
     }

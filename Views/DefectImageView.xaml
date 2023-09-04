@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:assignment2_LEJ.Views"
+        xmlns:local="clr-namespace:assignment2_LEJ.Converters"
         xmlns:viewModels="clr-namespace:assignment2_LEJ.ViewModels"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
@@ -11,7 +11,7 @@
     <UserControl.DataContext>
         <viewModels:DefectImageViewModel />
     </UserControl.DataContext>
-    <Grid>
+    <Grid x:Name="MyGrid">
         <Border HorizontalAlignment="Stretch" VerticalAlignment="Center" ClipToBounds="True">
             <Image Source="{Binding LoadedImage}" Stretch="Uniform"
                    RenderTransformOrigin="0.5,0.5">
@@ -34,10 +34,10 @@
                         <i:InvokeCommandAction Command="{Binding MouseMoveCommand}" />
                     </i:EventTrigger>
                     <i:EventTrigger EventName="MouseRightButtonDown">
-                        <i:InvokeCommandAction Command="{Binding StartDrawingCommand}" />
+                        <local:PassEventArgsToCommand Command="{Binding StartDrawingCommand}" />
                     </i:EventTrigger>
                     <i:EventTrigger EventName="MouseRightButtonUp">
-                        <i:InvokeCommandAction Command="{Binding FinishDrawingCommand}" />
+                        <local:PassEventArgsToCommand Command="{Binding FinishDrawingCommand}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Image>

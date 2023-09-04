@@ -15,7 +15,7 @@ using System.Windows.Forms;
 
 namespace assignment2_LEJ.ViewModels
 {
-    public class FileService : INotifyPropertyChanged
+    public class FileService : NotifierBase
     {
         #region[필드]
         private Node rootNode;
@@ -24,7 +24,6 @@ namespace assignment2_LEJ.ViewModels
         private string folderPath;
         private Wafer currentLoadedWafer;
         private bool defectShow = true;
-        public event PropertyChangedEventHandler PropertyChanged;
         #endregion
 
         #region[속성]
@@ -87,7 +86,7 @@ namespace assignment2_LEJ.ViewModels
         {
             OpenCommand = new RelayCommand(OpenFolder);
             FileList = new ObservableCollection<FileItem>(); 
-            RootNode = LoadDirectory(@"C:\Users\ejlee\Desktop\eunjin"); // 대상 경로 설정
+            RootNode = LoadDirectory(@"C:\Users\ejlee\Desktop\eunjin"); 
         }
         #endregion
 
@@ -370,10 +369,6 @@ namespace assignment2_LEJ.ViewModels
             }
         }
 
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
         #endregion
 
         #region

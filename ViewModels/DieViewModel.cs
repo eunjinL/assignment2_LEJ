@@ -9,11 +9,10 @@ using System.Windows.Input;
 
 namespace assignment2_LEJ.ViewModels
 {
-    public class DieViewModel : INotifyPropertyChanged
+    public class DieViewModel : NotifierBase
     {
         #region[필드]
         private Die die;
-        public event PropertyChangedEventHandler PropertyChanged;
         private bool isSelected;
         #endregion
         #region[속성]
@@ -76,10 +75,6 @@ namespace assignment2_LEJ.ViewModels
         #endregion
 
         #region[protected, private 메서드]
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
         #endregion
 
 

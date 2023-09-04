@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace assignment2_LEJ.ViewModels
 {
-    public class WaferMapViewModel : INotifyPropertyChanged
+    public class WaferMapViewModel : NotifierBase
     {
         #region[필드]
         private Wafer wafer;
@@ -20,7 +20,6 @@ namespace assignment2_LEJ.ViewModels
         private double screenWidth;
         private double screenHeight;
         private ObservableCollection<Tuple<int, int>> dieCoordinates;
-        public event PropertyChangedEventHandler PropertyChanged;
         private DieViewModel selectedDie;
         #endregion
 
@@ -192,16 +191,6 @@ namespace assignment2_LEJ.ViewModels
 
             CellWidth = (ScreenWidth - 25) / (Wafer.GridWidth + 1);
             CellHeight = (ScreenHeight - 50) / (Wafer.GridHeight + 1);
-        }
-        /**
-         * @brief 속성 변경 이벤트를 호출하여 UI를 업데이트합니다.
-         * @param propertyName 변경된 속성의 이름
-         * @return 없음
-         * 2023-08-28|이은진|속성 변경 시 UI를 업데이트합니다.
-         */
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
     }

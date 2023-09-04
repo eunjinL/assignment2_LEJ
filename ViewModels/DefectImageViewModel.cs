@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 
 namespace assignment2_LEJ.ViewModels
 {
-    public class DefectImageViewModel : INotifyPropertyChanged
+    public class DefectImageViewModel : NotifierBase
     {
         #region[필드]
         private int receivedDefectID = 2;
@@ -24,7 +24,6 @@ namespace assignment2_LEJ.ViewModels
         private BitmapSource loadedImage;
         private TiffBitmapDecoder tiffDecoder;
         private bool receivedDefectShow = false;
-        public event PropertyChangedEventHandler PropertyChanged;
         private double scale = 1;
         private Point imageStartPoint;
         private Point lineStartPoint;
@@ -54,6 +53,7 @@ namespace assignment2_LEJ.ViewModels
                 {
                     scale = value;
                     CalculateLineLength(StartPoint, EndPoint);
+                    DrawnLines.Clear();
                     Application.Current.Dispatcher.Invoke(() => OnPropertyChanged("Scale"));
                 }
             }
@@ -259,24 +259,42 @@ namespace assignment2_LEJ.ViewModels
                 ReceivedFolderPath = SharedData.Instance.FolderPath;
             }
         }
-        private void StartDrawing()
+        private void StartDrawing(object parameter)
         {
             DrawnLines.Clear();
             IsDrawing = true;
-            StartPoint = Mouse.GetPosition(null);
-            EndPoint = StartPoint;
+            var args = parameter as MouseEventArgs;
+            if (args != null)
+            {
+                UIElement control = args.OriginalSource as UIElement;
+                if (control != null)
+                {
+                    Point position = args.GetPosition(control);
+                    StartPoint = position;
+
+                    EndPoint = StartPoint;
+                }
+            }
         }
-        private void FinishDrawing()
+        private void FinishDrawing(object parameter)
         {
             IsDrawing = false;
-            EndPoint = Mouse.GetPosition(null);
-
-            // 여기서 DrawnLines에 선 정보를 추가하도록 처리
-            DrawnLines.Add(CreateLine(StartPoint, EndPoint));
-            CalculateLineLength(StartPoint, EndPoint);
+            var args = parameter as MouseEventArgs;
+            if (args != null)
+            {
+                UIElement control = args.OriginalSource as UIElement;
+                if (control != null)
+                {
+                    Point position = args.GetPosition(control);
+                    EndPoint = position;
+                    DrawnLines.Add(CreateLine(StartPoint, EndPoint));
+                    CalculateLineLength(StartPoint, EndPoint);
+                }
+            }
         }
         private void MouseLeftButtonDown()
         {
+            DrawnLines.Clear();
             Mouse.OverrideCursor = Cursors.ScrollAll;
             isDragging = true;
             imageStartPoint = Mouse.GetPosition(null);
@@ -288,7 +306,7 @@ namespace assignment2_LEJ.ViewModels
             isDragging = false;
         }
 
-        private void MouseButtonMove()
+        private void MouseButtonMove(object parameter)
         {
             if (isDragging)
             {
@@ -303,7 +321,16 @@ namespace assignment2_LEJ.ViewModels
             }
             else if (IsDrawing)
             {
-                EndPoint = Mouse.GetPosition(null);
+                var args = parameter as MouseButtonEventArgs;
+                if (args != null)
+                {
+                    UIElement control = args.OriginalSource as UIElement;
+                    if (control != null)
+                    {
+                        Point position = args.GetPosition(control);
+                        EndPoint = position;
+                    }
+                }
             }
         }
         private Line CreateLine(Point startPoint, Point endPoint)
@@ -321,19 +348,9 @@ namespace assignment2_LEJ.ViewModels
         private void CalculateLineLength(Point startPoint, Point endPoint)
         {
             double scaledLengthInPixels = Math.Sqrt(Math.Pow(endPoint.X - startPoint.X, 2) + Math.Pow(endPoint.Y - startPoint.Y, 2));
-            double scaledLengthInMicrometers = scaledLengthInPixels * (0.266 / Scale); // 스케일에 맞춰서 조정
+            double scaledLengthInMicrometers = scaledLengthInPixels * (0.266 / Scale); 
 
             LineLengthText = $"{scaledLengthInMicrometers:F2} µm";
-        }
-        /**
-        * @brief 속성 변경 이벤트 발생 메서드
-        * @param propertyName 변경된 속성의 이름
-        * @return 없음
-        * 2023-08-28|이은진|첫 버전 작성
-        */
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
     }

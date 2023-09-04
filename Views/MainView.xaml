@@ -31,18 +31,22 @@
         </Grid.ColumnDefinitions>
 
         <Border Background="#007ACC" Grid.Row="0" Grid.Column="0" Padding="5" CornerRadius="35,5,0,0">
-            <TextBlock Text="     Wafer Map Viewer "
-                       Foreground="White"
-                       FontWeight="Bold"/>
+            <TextBlock 
+                Text="Wafer Map Viewer"
+                Foreground="White"
+                FontWeight="Bold"
+                Margin="30,0,0,0"/>
         </Border>
         <Border Style="{StaticResource ViewBorderStyle}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
             <views:WaferMapView/>
         </Border>
 
         <Border Background="#007ACC" Grid.Row="0" Grid.Column="2" Padding="5" CornerRadius="35,5,0,0">
-            <TextBlock Text="     Defect Image Viewer "
-                       Foreground="White"
-                       FontWeight="Bold"/>
+            <TextBlock 
+                Text="Defect Image Viewer"
+                Foreground="White"
+                FontWeight="Bold"
+                Margin="30,0,0,0"/>
         </Border>
         <Border Style="{StaticResource ViewBorderStyle}" 
                 Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2">
@@ -50,18 +54,22 @@
         </Border>
 
         <Border Background="#007ACC" Grid.Row="2" Grid.Column="0" Padding="5" CornerRadius="35,5,0,0">
-            <TextBlock Text="        File List Viewer "
-                       Foreground="White"
-                       FontWeight="Bold"/>
+            <TextBlock 
+                Text="File List Viewer"
+                Foreground="White"
+                FontWeight="Bold"
+                Margin="30,0,0,0"/>
         </Border>
         <Border Style="{StaticResource ViewBorderStyle}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
             <views:FileListView/>
         </Border>
 
         <Border Background="#007ACC" Grid.Row="2" Grid.Column="2" Padding="5" CornerRadius="35,5,0,0">
-            <TextBlock Text="       Defect Info Viewer "
-                       Foreground="White"
-                       FontWeight="Bold"/>
+            <TextBlock 
+                Text="Defect Info Viewer"
+                Foreground="White"
+                FontWeight="Bold"
+                Margin="30,0,0,0"/>
         </Border>
         <Border Style="{StaticResource ViewBorderStyle}" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2">
             <views:DefectInfoView/>

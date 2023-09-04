@@ -98,6 +98,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\BindableSizeBehavior.cs" />
+    <Compile Include="Converters\PassEventArgsToCommand.cs" />
     <Compile Include="Models\Defect.cs" />
     <Compile Include="Models\Die.cs" />
     <Compile Include="Models\FileItem.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="ViewModels\DefectInfoViewModel.cs" />
     <Compile Include="ViewModels\DieViewModel.cs" />
     <Compile Include="ViewModels\FileService.cs" />
+    <Compile Include="ViewModels\NotifierBase.cs" />
     <Compile Include="ViewModels\RelayCommand.cs" />
     <Compile Include="Models\SharedData.cs" />
     <Compile Include="ViewModels\WaferMapViewModel.cs" />
