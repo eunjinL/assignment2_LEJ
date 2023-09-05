@@ -11,10 +11,11 @@
     <UserControl.DataContext>
         <viewModels:DefectImageViewModel />
     </UserControl.DataContext>
-    <Grid x:Name="MyGrid">
+    <Grid Name="MyGrid">
         <Border HorizontalAlignment="Stretch" VerticalAlignment="Center" ClipToBounds="True">
-            <Image Source="{Binding LoadedImage}" Stretch="Uniform"
-                   RenderTransformOrigin="0.5,0.5">
+            <Image Name="MyImage"
+                Source="{Binding LoadedImage}" Stretch="Uniform"
+                RenderTransformOrigin="0.5,0.5">
                 <Image.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="{Binding Scale}" 
@@ -30,23 +31,39 @@
                     <i:EventTrigger EventName="MouseLeftButtonUp">
                         <i:InvokeCommandAction Command="{Binding MouseLeftButtonUpCommand}" />
                     </i:EventTrigger>
-                    <i:EventTrigger EventName="MouseMove">
+                    <!--<i:EventTrigger EventName="MouseMove">
                         <i:InvokeCommandAction Command="{Binding MouseMoveCommand}" />
+                    </i:EventTrigger>-->
+                    <i:EventTrigger EventName="MouseMove">
+                        <local:PassEventArgsToCommand Command="{Binding MouseMoveCommand}" />
                     </i:EventTrigger>
-                    <i:EventTrigger EventName="MouseRightButtonDown">
+                    <!--<i:EventTrigger EventName="MouseRightButtonDown">
                         <local:PassEventArgsToCommand Command="{Binding StartDrawingCommand}" />
                     </i:EventTrigger>
                     <i:EventTrigger EventName="MouseRightButtonUp">
                         <local:PassEventArgsToCommand Command="{Binding FinishDrawingCommand}" />
+                    </i:EventTrigger>-->
+                    <i:EventTrigger EventName="MouseRightButtonDown">
+                        <i:InvokeCommandAction Command="{Binding StartDrawingCommand}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseRightButtonUp">
+                        <i:InvokeCommandAction Command="{Binding FinishDrawingCommand}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Image>
         </Border>
-        <TextBlock  
+        <!--<TextBlock  
             Grid.Row="0"
             Text="{Binding LineLengthText}" 
             HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5,0,5"
-            Foreground="red" Panel.ZIndex="1"/>
+            Foreground="red" Panel.ZIndex="1"/>-->
+        <Canvas Name="MyCanvas">
+            <TextBlock  
+                Text="{Binding LineLengthText}" 
+                Canvas.Left="{Binding TextBlockPositionX}" 
+                Canvas.Top="{Binding TextBlockPositionY}" 
+                Foreground="red"/>
+        </Canvas>
         <ItemsControl Grid.Row="0" ItemsSource="{Binding DrawnLines}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>

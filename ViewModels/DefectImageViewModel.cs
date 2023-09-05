@@ -44,6 +44,9 @@ namespace assignment2_LEJ.ViewModels
         public ICommand MouseMoveCommand => new RelayCommand(MouseButtonMove);
         public ICommand StartDrawingCommand => new RelayCommand(StartDrawing);
         public ICommand FinishDrawingCommand => new RelayCommand(FinishDrawing);
+        public double textBlockPositionX;
+        public double textBlockPositionY;
+
         public double Scale
         {
             get { return scale; }
@@ -53,9 +56,27 @@ namespace assignment2_LEJ.ViewModels
                 {
                     scale = value;
                     CalculateLineLength(StartPoint, EndPoint);
-                    DrawnLines.Clear();
+                    ClearLine();
                     Application.Current.Dispatcher.Invoke(() => OnPropertyChanged("Scale"));
                 }
+            }
+        }
+        public double TextBlockPositionX
+        {
+            get { return textBlockPositionX; }
+            set
+            {
+                textBlockPositionX = value;
+                OnPropertyChanged("textBlockPositionX");
+            }
+        }
+        public double TextBlockPositionY
+        {
+            get { return textBlockPositionY; }
+            set
+            {
+                textBlockPositionY = value;
+                OnPropertyChanged("textBlockPositionY");
             }
         }
         public string LineLengthText
@@ -65,6 +86,7 @@ namespace assignment2_LEJ.ViewModels
             {
                 lineLengthText = value;
                 OnPropertyChanged(nameof(LineLengthText));
+                UpdateTextBlockPosition();
             }
         }
         public ObservableCollection<Line> DrawnLines
@@ -259,7 +281,7 @@ namespace assignment2_LEJ.ViewModels
                 ReceivedFolderPath = SharedData.Instance.FolderPath;
             }
         }
-        private void StartDrawing(object parameter)
+        /*private void StartDrawing(object parameter)
         {
             DrawnLines.Clear();
             IsDrawing = true;
@@ -272,6 +294,31 @@ namespace assignment2_LEJ.ViewModels
                     Point position = args.GetPosition(control);
                     StartPoint = position;
 
+                    EndPoint = StartPoint;
+                }
+            }
+        }*/
+        /*private void StartDrawing(object parameter)
+        {
+            DrawnLines.Clear();
+            IsDrawing = true;
+            var args = parameter as MouseEventArgs;
+            if (args != null)
+            {
+                Image imageControl = args.OriginalSource as Image;
+                if (imageControl != null)
+                {
+                    Point positionOnControl = args.GetPosition(imageControl);
+
+                    // 스케일링 비율 계산
+                    double scaleX = imageControl.ActualWidth / imageControl.RenderSize.Width;
+                    double scaleY = imageControl.ActualHeight / imageControl.RenderSize.Height;
+
+                    // 실제 이미지 상의 좌표 계산
+                    double imageX = positionOnControl.X * scaleX;
+                    double imageY = positionOnControl.Y * scaleY;
+
+                    StartPoint = new Point(imageX, imageY);
                     EndPoint = StartPoint;
                 }
             }
@@ -291,21 +338,37 @@ namespace assignment2_LEJ.ViewModels
                     CalculateLineLength(StartPoint, EndPoint);
                 }
             }
+        }*/
+        // 하드코딩 했는데 추구 변경해야함
+        private void StartDrawing()
+        {
+            ClearLine();
+            IsDrawing = true;
+            Point originalStart = Mouse.GetPosition(null);
+            StartPoint = new Point(originalStart.X - 790, originalStart.Y - 20);
+            EndPoint = StartPoint;
+        }
+        private void FinishDrawing()
+        {
+            IsDrawing = false;
+            Point originalEnd = Mouse.GetPosition(null);
+            EndPoint = new Point(originalEnd.X - 790, originalEnd.Y - 20);
+
+            DrawnLines.Add(CreateLine(StartPoint, EndPoint));
+            CalculateLineLength(StartPoint, EndPoint);
         }
         private void MouseLeftButtonDown()
         {
-            DrawnLines.Clear();
+            ClearLine();
             Mouse.OverrideCursor = Cursors.ScrollAll;
             isDragging = true;
             imageStartPoint = Mouse.GetPosition(null);
         }
-
         private void MouseLeftButtonUp()
         {
             Mouse.OverrideCursor = Cursors.Arrow;
             isDragging = false;
         }
-
         private void MouseButtonMove(object parameter)
         {
             if (isDragging)
@@ -321,7 +384,7 @@ namespace assignment2_LEJ.ViewModels
             }
             else if (IsDrawing)
             {
-                var args = parameter as MouseButtonEventArgs;
+                var args = parameter as MouseEventArgs;
                 if (args != null)
                 {
                     UIElement control = args.OriginalSource as UIElement;
@@ -345,6 +408,11 @@ namespace assignment2_LEJ.ViewModels
                 StrokeThickness = 2
             };
         }
+        public void ClearLine()
+        {
+            DrawnLines.Clear();
+            LineLengthText = "";  
+        }
         private void CalculateLineLength(Point startPoint, Point endPoint)
         {
             double scaledLengthInPixels = Math.Sqrt(Math.Pow(endPoint.X - startPoint.X, 2) + Math.Pow(endPoint.Y - startPoint.Y, 2));
@@ -352,6 +420,12 @@ namespace assignment2_LEJ.ViewModels
 
             LineLengthText = $"{scaledLengthInMicrometers:F2} µm";
         }
+        private void UpdateTextBlockPosition()
+        {
+            TextBlockPositionX = (StartPoint.X + EndPoint.X) / 2;
+            TextBlockPositionY = (StartPoint.Y + EndPoint.Y) / 2;
+        }
+
         #endregion
     }
 
