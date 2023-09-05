@@ -72,11 +72,6 @@
                         X2="{Binding X2}" Y2="{Binding Y2}"
                         Stroke="{Binding Stroke}" 
                         StrokeThickness="{Binding StrokeThickness}"/>
-                    <!--<Line 
-                        X1="1142" Y1="239" 
-                        X2="1142" Y2="291"
-                        Stroke="Red" 
-                        StrokeThickness="3"/>-->
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

@@ -105,6 +105,7 @@
     <Compile Include="Models\Wafer.cs" />
     <Compile Include="ViewModels\DefectImageViewModel.cs" />
     <Compile Include="ViewModels\DefectInfoViewModel.cs" />
+    <Compile Include="ViewModels\DefectViewModel.cs" />
     <Compile Include="ViewModels\DieViewModel.cs" />
     <Compile Include="ViewModels\FileService.cs" />
     <Compile Include="ViewModels\NotifierBase.cs" />
@@ -202,6 +203,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\logo_ATI.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\KlarfFormat.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

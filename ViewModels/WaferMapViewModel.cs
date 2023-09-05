@@ -32,12 +32,12 @@ namespace assignment2_LEJ.ViewModels
                 if (selectedDie != value)
                 {
                     if (selectedDie != null)
-                        selectedDie.IsSelected = false; 
+                        selectedDie.IsSelected = false;
 
                     selectedDie = value;
 
                     if (selectedDie != null)
-                        selectedDie.IsSelected = true;  
+                        selectedDie.IsSelected = true;
 
                     OnPropertyChanged(nameof(SelectedDie));
                 }

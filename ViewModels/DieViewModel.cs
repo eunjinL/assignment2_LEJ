@@ -1,6 +1,7 @@
 ﻿using assignment2_LEJ.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -34,7 +35,6 @@ namespace assignment2_LEJ.ViewModels
                         }
                     });
                 }
-
                 return selectCommand;
             }
         }
@@ -58,6 +58,11 @@ namespace assignment2_LEJ.ViewModels
             set
             {
                 die = value;
+                DefectViewModels.Clear();
+                foreach (var defect in die.Defects)
+                {
+                    DefectViewModels.Add(new DefectViewModel { Defect = defect });
+                }
                 OnPropertyChanged(nameof(Die));
             }
         }
@@ -72,15 +77,13 @@ namespace assignment2_LEJ.ViewModels
                 return null;
             }
         }
+        public ObservableCollection<DefectViewModel> DefectViewModels { get; set; } = new ObservableCollection<DefectViewModel>();
+
+
         #endregion
 
         #region[protected, private 메서드]
         #endregion
-
-
-
-        
-        
     }
 
 }

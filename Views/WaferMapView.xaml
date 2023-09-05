@@ -17,53 +17,91 @@
         <i:Interaction.Behaviors>
             <converters:BindableSizeBehavior Width="{Binding ScreenWidth, Mode=TwoWay}" Height="{Binding ScreenHeight, Mode=TwoWay}"/>
         </i:Interaction.Behaviors>
-        <ItemsControl ItemsSource="{Binding DieViewModels}">
+        <Image Source="..\Images\KlarfFormat.jpg" 
+               Stretch="Fill" 
+               Width="{Binding ScreenWidth}" 
+               Height="{Binding ScreenHeight}" 
+               Panel.ZIndex="0" />
+        <ItemsControl 
+            Background="Transparent" 
+            ItemsSource="{Binding DieViewModels}" 
+            Panel.ZIndex="1">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Rectangle 
-                        Width="{Binding Path=DataContext.CellWidth, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
-                        Height="{Binding Path=DataContext.CellHeight, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
-                        Margin="1">
-                        <Rectangle.ToolTip>
-                            <ToolTip Content="{Binding Die.Coordinate, StringFormat='X: {0}, Y: {1}'}"/>
-                        </Rectangle.ToolTip>
-                        <Rectangle.Style>
-                            <Style TargetType="Rectangle">
-                                <Setter Property="Fill" Value="Red"/>
-                                <Setter Property="Stroke" Value="Black"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Die.Defects.Count}" Value="0">
-                                        <Setter Property="Fill" Value="#D3D3D3"/>
+                    <Canvas>
+                        <!-- 다이 사각형 그리는 캔버스 -->
+                        <Canvas>
+                            <Rectangle 
+                                Width="{Binding Path=DataContext.CellWidth, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
+                                Height="{Binding Path=DataContext.CellHeight, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
+                                Margin="1" Panel.ZIndex="1">
+                                <Rectangle.ToolTip>
+                                    <ToolTip Content="{Binding Die.Coordinate, StringFormat='X: {0}, Y: {1}'}"/>
+                                </Rectangle.ToolTip>
+                                <Rectangle.Style>
+                                    <Style TargetType="Rectangle">
+                                        <Setter Property="Fill" Value="#FAC6C6"/>
                                         <Setter Property="Stroke" Value="Black"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                        <Setter Property="Stroke" Value="Blue"/>
-                                        <Setter Property="StrokeThickness" Value="2"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Rectangle.Style>
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="MouseLeftButtonDown">
-                                <i:InvokeCommandAction Command="{Binding SelectCommand}"
-                                                       CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext}"/>
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                        <Rectangle.RenderTransform>
-                            <TranslateTransform 
-                                X="{Binding Die.GridCoordinate.Item1}" 
-                                Y="{Binding Die.GridCoordinate.Item2}" />
-                        </Rectangle.RenderTransform>
-                    </Rectangle>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Die.Defects.Count}" Value="0">
+                                                <Setter Property="Fill" Value="#D3D3D3"/>
+                                                <Setter Property="Stroke" Value="Black"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                <Setter Property="Stroke" Value="Blue"/>
+                                                <Setter Property="StrokeThickness" Value="2"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Rectangle.Style>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseLeftButtonDown">
+                                        <i:InvokeCommandAction 
+                                            Command="{Binding SelectCommand}"
+                                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <Rectangle.RenderTransform>
+                                    <TranslateTransform 
+                                        X="{Binding Die.GridCoordinate.Item1}" 
+                                        Y="{Binding Die.GridCoordinate.Item2}" />
+                                </Rectangle.RenderTransform>
+                            </Rectangle>
+                        </Canvas>
+
+                        <!-- 빨간색 점(디팩)을 그리는 캔버스 -->
+                        <Canvas>
+                            <ItemsControl ItemsSource="{Binding DefectViewModels}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Ellipse Width="5" Height="5" Fill="Red" Panel.ZIndex="2">
+                                            <Ellipse.RenderTransform>
+                                                <TransformGroup>
+                                                    <TranslateTransform 
+                                                        X="{Binding Path=DataContext.Die.GridCoordinate.Item1,
+                                                            RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
+                                                        Y="{Binding Path=DataContext.Die.GridCoordinate.Item2,
+                                                            RelativeSource={RelativeSource AncestorType=ItemsControl}}" />
+                                                    <TranslateTransform 
+                                                        X="{Binding XPosition, FallbackValue=3}" 
+                                                        Y="{Binding YPosition, FallbackValue=3}" />
+                                                </TransformGroup>
+                                            </Ellipse.RenderTransform>
+                                        </Ellipse>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Canvas>
+                    </Canvas>
                 </DataTemplate>
+
             </ItemsControl.ItemTemplate>
 
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Canvas Background="Black" />
+                    <Canvas Background="Black"/>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
     </Grid>
-
 </UserControl>
