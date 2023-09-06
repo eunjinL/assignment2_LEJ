@@ -40,6 +40,7 @@ namespace assignment2_LEJ.ViewModels
                     currentDefectIndex = value;
                     OnPropertyChanged(nameof(CurrentDefectIndex));
                     OnPropertyChanged(nameof(DefectDisplayText));
+                    UpdateSelectedCoordinateFromCurrentDefect();
                 }
             }
         }
@@ -51,7 +52,7 @@ namespace assignment2_LEJ.ViewModels
                 if (currentDieIndex != value)
                 {
                     currentDieIndex = value;
-                    OnPropertyChanged(nameof(currentDieIndex));
+                    OnPropertyChanged(nameof(CurrentDieIndex));
                     OnPropertyChanged(nameof(DieDisplayText));
                     SelectedDie = Wafer.Dies[currentDieIndex];
 
@@ -213,7 +214,21 @@ namespace assignment2_LEJ.ViewModels
         #endregion
 
         #region[protected, private 메서드]
-
+        private void UpdateSelectedCoordinateFromCurrentDefect()
+        {
+            if (selectedDefect != null)
+            {
+                for (int i = 0; i < Wafer.Dies.Count; i++)
+                {
+                    Die currentDie = Wafer.Dies[i];
+                    if (currentDie.Defects.Contains(selectedDefect))
+                    {
+                        SharedData.Instance.SelectedCoordinate = currentDie.Coordinate;
+                        break;
+                    }
+                }
+            }
+        }
         /**
         * @brief SharedData의 속성 변경 이벤트 핸들러입니다.
         * @param sender 이벤트를 발생시킨 객체

@@ -77,6 +77,18 @@ namespace assignment2_LEJ.ViewModels
                 return null;
             }
         }
+        public DieViewModel()
+        {
+            SharedData.Instance.PropertyChanged += SharedData_PropertyChanged;
+        }
+
+        private void SharedData_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(SharedData.SelectedCoordinate))
+            {
+                IsSelected = SharedData.Instance.SelectedCoordinate == this.Die?.Coordinate;
+            }
+        }
         public ObservableCollection<DefectViewModel> DefectViewModels { get; set; } = new ObservableCollection<DefectViewModel>();
 
 

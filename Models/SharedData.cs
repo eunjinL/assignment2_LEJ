@@ -18,6 +18,8 @@ namespace assignment2_LEJ.ViewModels
         private int defectIndexData;
         public event PropertyChangedEventHandler PropertyChanged;
         private Tuple<int, int> selectedCoordinate;
+        private double cellWidth;
+        private double cellHeight;
         #endregion
         #region[속성]
         /**
@@ -93,6 +95,24 @@ namespace assignment2_LEJ.ViewModels
             {
                 defectIndexData = value;
                 OnPropertyChanged("DefectIndexData");
+            }
+        }
+        public double CellWidth
+        {
+            get { return cellWidth; }
+            set
+            {
+                cellWidth = value;
+                OnPropertyChanged(nameof(CellWidth));
+            }
+        }
+        public double CellHeight
+        {
+            get { return cellHeight; }
+            set
+            {
+                cellHeight = value;
+                OnPropertyChanged(nameof(CellHeight));
             }
         }
         #endregion

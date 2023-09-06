@@ -83,8 +83,8 @@
                                                         Y="{Binding Path=DataContext.Die.GridCoordinate.Item2,
                                                             RelativeSource={RelativeSource AncestorType=ItemsControl}}" />
                                                     <TranslateTransform 
-                                                        X="{Binding XPosition, FallbackValue=3}" 
-                                                        Y="{Binding YPosition, FallbackValue=3}" />
+                                                        X="{Binding XPosition}" 
+                                                        Y="{Binding YPosition}" />
                                                 </TransformGroup>
                                             </Ellipse.RenderTransform>
                                         </Ellipse>

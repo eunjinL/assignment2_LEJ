@@ -255,6 +255,10 @@ namespace assignment2_LEJ.ViewModels
                     else if (line.StartsWith("DefectList"))
                     {
                         line = sr.ReadLine();
+                        double maxXREL = double.MinValue;
+                        double minXREL = double.MaxValue;
+                        double maxYREL = double.MinValue;
+                        double minYREL = double.MaxValue;
                         while (line != null && !line.EndsWith(";"))
                         {
                             string[] parts = line.Split(' ');
@@ -279,6 +283,10 @@ namespace assignment2_LEJ.ViewModels
                                 IMAGECOUNT = int.Parse(parts[15]),
                                 IMAGELIST = new List<int> { int.Parse(parts[16]) }
                             };
+                            maxXREL = Math.Max(maxXREL, defect.XREL);
+                            minXREL = Math.Min(minXREL, defect.XREL);
+                            maxYREL = Math.Max(maxYREL, defect.YREL);
+                            minYREL = Math.Min(minYREL, defect.YREL);
 
                             line = sr.ReadLine();
                             if (line != null)
@@ -297,8 +305,10 @@ namespace assignment2_LEJ.ViewModels
                             { 
                                 matchingDie.Defects.Add(defect);
                             }
-                            line = sr.ReadLine(); 
+                            line = sr.ReadLine();
                         }
+                        wafer.DefectWidth = maxXREL - minXREL;
+                        wafer.DefectHeight = maxYREL - minYREL;
                     }
 
                 }

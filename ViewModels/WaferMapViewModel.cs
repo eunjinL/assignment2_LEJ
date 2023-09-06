@@ -191,6 +191,11 @@ namespace assignment2_LEJ.ViewModels
 
             CellWidth = (ScreenWidth - 25) / (Wafer.GridWidth + 1);
             CellHeight = (ScreenHeight - 50) / (Wafer.GridHeight + 1);
+            if (CellWidth > 0 && CellHeight > 0)
+            {
+                SharedData.Instance.CellWidth = CellWidth;
+                SharedData.Instance.CellHeight = CellHeight;
+            }
         }
         #endregion
     }
