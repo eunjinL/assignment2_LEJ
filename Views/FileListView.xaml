@@ -95,6 +95,7 @@
                 <Style TargetType="ListViewItem">
                     <Setter Property="FontSize" Value="15"/>
                     <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
                 </Style>
             </ListView.ItemContainerStyle>
             <ListView.Resources>

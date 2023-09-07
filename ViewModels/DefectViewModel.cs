@@ -78,20 +78,17 @@ namespace assignment2_LEJ.ViewModels
         }
         public void NormalizeCoordinates()
         {
-            if (CellHeight != 0 && CellHeight != 0)
+            if (CellWidth != 0 && CellHeight != 0)
             {
-                double xScaleCoordinate = Defect.XREL / SharedData.Instance.WaferData.DefectWidth;
-                double yScaleCoordinate = Defect.YREL / SharedData.Instance.WaferData.DefectHeight;
-                /*double xScaleCoordinate = Defect.XREL / 5000;
-                double yScaleCoordinate = Defect.YREL / 8000;*/
+                double xScaleCoordinate = Defect.XREL / SharedData.Instance.WaferData.DefectXMax;
+                double yScaleCoordinate = (SharedData.Instance.WaferData.DefectYMax - Defect.YREL) / SharedData.Instance.WaferData.DefectYMax;
                 xPosition = (CellWidth - 6) * xScaleCoordinate;
-                // yPosition = CellHeight - CellHeight * yScaleCoordinate;
                 yPosition = (CellHeight - 6) * yScaleCoordinate;
             }
             else
             {
-                xPosition = Defect.XREL / 1000;
-                yPosition = Defect.YREL / 1000;
+                xPosition = 0;
+                yPosition = 0;
             }
         }
         public double XPosition

@@ -85,8 +85,21 @@ namespace assignment2_LEJ.ViewModels
         public FileService()
         {
             OpenCommand = new RelayCommand(OpenFolder);
-            FileList = new ObservableCollection<FileItem>(); 
-            RootNode = LoadDirectory(@"C:\Users\ejlee\Desktop\eunjin"); 
+            FileList = new ObservableCollection<FileItem>();
+            try
+            {
+                RootNode = LoadDirectory(@"C:\Users\ejlee\Desktop\eunjin");
+            }
+            catch (DirectoryNotFoundException ex)
+            {
+                MessageBox.Show($"디렉토리를 찾을 수 없습니다: {ex.Message}");
+                RootNode = null; 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"오류가 발생했습니다: {ex.Message}");
+                RootNode = null; 
+            }
         }
         #endregion
 
@@ -309,6 +322,10 @@ namespace assignment2_LEJ.ViewModels
                         }
                         wafer.DefectWidth = maxXREL - minXREL;
                         wafer.DefectHeight = maxYREL - minYREL;
+                        wafer.DefectXMin = minXREL;
+                        wafer.DefectYMin = minYREL;
+                        wafer.DefectXMax = maxXREL;
+                        wafer.DefectYMax = maxYREL;
                     }
 
                 }

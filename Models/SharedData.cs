@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace assignment2_LEJ.ViewModels
 {
-    public class SharedData : INotifyPropertyChanged
+    public class SharedData : NotifierBase
     {
         #region[필드]
         private static SharedData instance = null;
@@ -16,7 +16,6 @@ namespace assignment2_LEJ.ViewModels
         private string folderPath;
         private bool defectShowData;
         private int defectIndexData;
-        public event PropertyChangedEventHandler PropertyChanged;
         private Tuple<int, int> selectedCoordinate;
         private double cellWidth;
         private double cellHeight;
@@ -135,19 +134,6 @@ namespace assignment2_LEJ.ViewModels
         }
         #endregion
         #region[protected, private 메서드]
-        /**
-         * @brief 속성 변경을 알린다.
-         * @param name 변경된 속성의 이름
-         * @return 없음
-         */
-        protected void OnPropertyChanged(string name)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(name));
-            }
-        }
         #endregion
     }
 }

@@ -38,6 +38,10 @@ namespace assignment2_LEJ.Models
         public int GridHeight { get; set; }
         public double DefectWidth { get; set; }
         public double DefectHeight { get; set; }
+        public double DefectXMax { get; set; }
+        public double DefectYMax { get; set; }
+        public double DefectXMin { get; set; }
+        public double DefectYMin { get; set; }
         public int GridResolution
         {
             get { return gridResolution; }

@@ -31,9 +31,6 @@
                     <i:EventTrigger EventName="MouseLeftButtonUp">
                         <i:InvokeCommandAction Command="{Binding MouseLeftButtonUpCommand}" />
                     </i:EventTrigger>
-                    <!--<i:EventTrigger EventName="MouseMove">
-                        <i:InvokeCommandAction Command="{Binding MouseMoveCommand}" />
-                    </i:EventTrigger>-->
                     <i:EventTrigger EventName="MouseMove">
                         <local:PassEventArgsToCommand Command="{Binding MouseMoveCommand}" />
                     </i:EventTrigger>
@@ -52,11 +49,6 @@
                 </i:Interaction.Triggers>
             </Image>
         </Border>
-        <!--<TextBlock  
-            Grid.Row="0"
-            Text="{Binding LineLengthText}" 
-            HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5,0,5"
-            Foreground="red" Panel.ZIndex="1"/>-->
         <Canvas Name="MyCanvas">
             <TextBlock  
                 Text="{Binding LineLengthText}" 

@@ -74,7 +74,7 @@
                             <ItemsControl ItemsSource="{Binding DefectViewModels}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Ellipse Width="5" Height="5" Fill="Red" Panel.ZIndex="2">
+                                        <Ellipse Width="4" Height="4" Fill="Red" Panel.ZIndex="2">
                                             <Ellipse.RenderTransform>
                                                 <TransformGroup>
                                                     <TranslateTransform 
