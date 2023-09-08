@@ -65,6 +65,7 @@
                                     <TranslateTransform 
                                         X="{Binding Die.GridCoordinate.Item1}" 
                                         Y="{Binding Die.GridCoordinate.Item2}" />
+                                    
                                 </Rectangle.RenderTransform>
                             </Rectangle>
                         </Canvas>

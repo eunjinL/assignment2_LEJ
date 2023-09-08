@@ -320,8 +320,8 @@ namespace assignment2_LEJ.ViewModels
                             }
                             line = sr.ReadLine();
                         }
-                        wafer.DefectWidth = maxXREL - minXREL;
-                        wafer.DefectHeight = maxYREL - minYREL;
+                        wafer.DefectWidth = maxXREL + minXREL;
+                        wafer.DefectHeight = maxYREL + minYREL;
                         wafer.DefectXMin = minXREL;
                         wafer.DefectYMin = minYREL;
                         wafer.DefectXMax = maxXREL;

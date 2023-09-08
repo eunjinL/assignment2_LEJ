@@ -80,8 +80,10 @@ namespace assignment2_LEJ.ViewModels
         {
             if (CellWidth != 0 && CellHeight != 0)
             {
-                double xScaleCoordinate = Defect.XREL / SharedData.Instance.WaferData.DefectXMax;
-                double yScaleCoordinate = (SharedData.Instance.WaferData.DefectYMax - Defect.YREL) / SharedData.Instance.WaferData.DefectYMax;
+                /*double xScaleCoordinate = Defect.XREL / SharedData.Instance.WaferData.DefectXMax;
+                double yScaleCoordinate = (SharedData.Instance.WaferData.DefectYMax - Defect.YREL) / SharedData.Instance.WaferData.DefectYMax;*/
+                double xScaleCoordinate = Defect.XREL / SharedData.Instance.WaferData.DefectWidth;
+                double yScaleCoordinate = (SharedData.Instance.WaferData.DefectHeight - Defect.YREL) / SharedData.Instance.WaferData.DefectHeight;
                 xPosition = (CellWidth - 6) * xScaleCoordinate;
                 yPosition = (CellHeight - 6) * yScaleCoordinate;
             }
