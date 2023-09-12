@@ -30,6 +30,8 @@ namespace assignment2_LEJ.ViewModels
         private Point lineEndPoint;
         private bool isDrawing = false;
         private bool isDragging = false;
+        private double screenWidth;
+        private double screenHeight;
         private double translateX = 0.0;
         private double translateY = 0.0;
         private string lineLengthText;
@@ -46,7 +48,26 @@ namespace assignment2_LEJ.ViewModels
         public ICommand FinishDrawingCommand => new RelayCommand(FinishDrawing);
         public double textBlockPositionX;
         public double textBlockPositionY;
-
+        public double ScreenWidth
+        {
+            get { return screenWidth; }
+            set
+            {
+                screenWidth = value;
+                OnPropertyChanged(nameof(ScreenWidth));
+                ClearLine();
+            }
+        }
+        public double ScreenHeight
+        {
+            get { return screenHeight; }
+            set
+            {
+                screenHeight = value;
+                OnPropertyChanged(nameof(ScreenHeight));
+                ClearLine();
+            }
+        }
         public double Scale
         {
             get { return scale; }
@@ -255,6 +276,10 @@ namespace assignment2_LEJ.ViewModels
         public DefectImageViewModel()
         {
             SharedData.Instance.PropertyChanged += SharedData_PropertyChanged;
+            /*if ScreenHeight!=0 $$
+            initialScreenWidth = ScreenWidth;
+            initialScreenHeight = ScreenHeight;*/
+
         }
         #endregion
 
@@ -281,78 +306,20 @@ namespace assignment2_LEJ.ViewModels
                 ReceivedFolderPath = SharedData.Instance.FolderPath;
             }
         }
-        /*private void StartDrawing(object parameter)
-        {
-            DrawnLines.Clear();
-            IsDrawing = true;
-            var args = parameter as MouseEventArgs;
-            if (args != null)
-            {
-                UIElement control = args.OriginalSource as UIElement;
-                if (control != null)
-                {
-                    Point position = args.GetPosition(control);
-                    StartPoint = position;
-
-                    EndPoint = StartPoint;
-                }
-            }
-        }*/
-        /*private void StartDrawing(object parameter)
-        {
-            DrawnLines.Clear();
-            IsDrawing = true;
-            var args = parameter as MouseEventArgs;
-            if (args != null)
-            {
-                Image imageControl = args.OriginalSource as Image;
-                if (imageControl != null)
-                {
-                    Point positionOnControl = args.GetPosition(imageControl);
-
-                    // 스케일링 비율 계산
-                    double scaleX = imageControl.ActualWidth / imageControl.RenderSize.Width;
-                    double scaleY = imageControl.ActualHeight / imageControl.RenderSize.Height;
-
-                    // 실제 이미지 상의 좌표 계산
-                    double imageX = positionOnControl.X * scaleX;
-                    double imageY = positionOnControl.Y * scaleY;
-
-                    StartPoint = new Point(imageX, imageY);
-                    EndPoint = StartPoint;
-                }
-            }
-        }
-        private void FinishDrawing(object parameter)
-        {
-            IsDrawing = false;
-            var args = parameter as MouseEventArgs;
-            if (args != null)
-            {
-                UIElement control = args.OriginalSource as UIElement;
-                if (control != null)
-                {
-                    Point position = args.GetPosition(control);
-                    EndPoint = position;
-                    DrawnLines.Add(CreateLine(StartPoint, EndPoint));
-                    CalculateLineLength(StartPoint, EndPoint);
-                }
-            }
-        }*/
         // 하드코딩 했는데 추구 변경해야함
         private void StartDrawing()
         {
             ClearLine();
             IsDrawing = true;
             Point originalStart = Mouse.GetPosition(null);
-            StartPoint = new Point(originalStart.X - 790, originalStart.Y - 20);
+            StartPoint = new Point(originalStart.X - ScreenWidth + 10, originalStart.Y - 25);
             EndPoint = StartPoint;
         }
         private void FinishDrawing()
         {
             IsDrawing = false;
             Point originalEnd = Mouse.GetPosition(null);
-            EndPoint = new Point(originalEnd.X - 790, originalEnd.Y - 20);
+            EndPoint = new Point(originalEnd.X - ScreenWidth + 10, originalEnd.Y - 25);
 
             DrawnLines.Add(CreateLine(StartPoint, EndPoint));
             CalculateLineLength(StartPoint, EndPoint);
@@ -416,10 +383,11 @@ namespace assignment2_LEJ.ViewModels
         private void CalculateLineLength(Point startPoint, Point endPoint)
         {
             double scaledLengthInPixels = Math.Sqrt(Math.Pow(endPoint.X - startPoint.X, 2) + Math.Pow(endPoint.Y - startPoint.Y, 2));
-            double scaledLengthInMicrometers = scaledLengthInPixels * (0.266 / Scale); 
+            double scaledLengthInMicrometers = scaledLengthInPixels * (0.266 / Scale);
 
             LineLengthText = $"{scaledLengthInMicrometers:F2} µm";
         }
+
         private void UpdateTextBlockPosition()
         {
             TextBlockPositionX = (StartPoint.X + EndPoint.X) / 2;

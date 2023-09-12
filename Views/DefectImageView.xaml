@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:assignment2_LEJ.Converters"
         xmlns:viewModels="clr-namespace:assignment2_LEJ.ViewModels"
+        xmlns:converters="clr-namespace:assignment2_LEJ.Converters"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         Background="White" >
@@ -12,6 +13,9 @@
         <viewModels:DefectImageViewModel />
     </UserControl.DataContext>
     <Grid Name="MyGrid">
+        <i:Interaction.Behaviors>
+            <converters:BindableSizeBehavior Width="{Binding ScreenWidth, Mode=TwoWay}" Height="{Binding ScreenHeight, Mode=TwoWay}"/>
+        </i:Interaction.Behaviors>
         <Border HorizontalAlignment="Stretch" VerticalAlignment="Center" ClipToBounds="True">
             <Image Name="MyImage"
                 Source="{Binding LoadedImage}" Stretch="Uniform"
